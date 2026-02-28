@@ -1,0 +1,355 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 40,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 300000,
+    "maxPaymentRatio": 0.06,
+    "arrivalBaseMin": 3,
+    "arrivalBaseMax": 5,
+    "arrivalBurstProb": 0.55,
+    "arrivalBurstMin": 4,
+    "arrivalBurstMax": 9,
+    "processingDelayMin": 1,
+    "processingDelayMax": 7,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "/Users/envvar/work/repos/bk/agent-credit-demo/reports/stress-grid/20260228T133151Z/combined_stress-400.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.06,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 3,
+    "arrivalBaseMax": 5,
+    "arrivalBurstProb": 0.55,
+    "arrivalBurstMin": 4,
+    "arrivalBurstMax": 9,
+    "processingDelayMin": 1,
+    "processingDelayMax": 7
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 8,
+    "totalTrials": 40
+  },
+  "averages": {
+    "committed": 1525.85,
+    "failed": 140.7,
+    "routes": 1666.55,
+    "budgetSkips": 1351.825,
+    "budgetSkipRatio": 0.44709590754674017,
+    "maxBudgetSkipStreak": 16.125,
+    "maxRawRouteStreak": 4.55,
+    "maxRouteStreak": 4.125,
+    "singleFiniteQuoteRatio": 0.4998846310760431,
+    "top1Share": 0.24053899346524651,
+    "hhi": 0.19770720153750568,
+    "activeRouteNodes": 6,
+    "clearingOutflow": 55973.63774332383,
+    "commitGross": 507400.31214935484,
+    "clearingToCommitRatio": 0.11178896183470362,
+    "clientBalance": 9781.523907575496
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 3,
+    "budget_stall": 6,
+    "low_route_diversity": 3
+  },
+  "routeShares": {
+    "DOMINANT": 15717
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 4,
+      "committed": 1514,
+      "failed": 125,
+      "inflight": 0,
+      "routes": 1639,
+      "budgetSkips": 1344,
+      "budgetSkipRatio": 0.45055313442842776,
+      "maxBudgetSkipStreak": 21,
+      "maxRawRouteStreak": 4,
+      "maxRouteStreak": 3,
+      "singleFiniteQuoteRatio": 0.609375,
+      "isolated": 0,
+      "top1Share": 0.24344112263575352,
+      "hhi": 0.201841477619391,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 51041.01950681664,
+      "commitGross": 507834.5904071742,
+      "clearingToCommitRatio": 0.10050717393215125,
+      "clientBalance": 7053.204027330765,
+      "firstBudgetSkipStep": 4,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "budget_stall",
+          "message": "maxBudgetSkipStreak too high: 21 > 20",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "trial": 6,
+      "committed": 1597,
+      "failed": 104,
+      "inflight": 0,
+      "routes": 1701,
+      "budgetSkips": 1260,
+      "budgetSkipRatio": 0.425531914893617,
+      "maxBudgetSkipStreak": 13,
+      "maxRawRouteStreak": 5,
+      "maxRouteStreak": 4,
+      "singleFiniteQuoteRatio": 0.704225352112676,
+      "isolated": 0,
+      "top1Share": 0.22692533803644915,
+      "hhi": 0.1828218764008169,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 57412.12600347701,
+      "commitGross": 507865.80778502673,
+      "clearingToCommitRatio": 0.11304585802669127,
+      "clientBalance": 7153.470461073964,
+      "firstBudgetSkipStep": 2,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "low_route_diversity",
+          "message": "singleFiniteQuoteRatio too high: 0.704 > 0.7 (observedTicks=355)",
+          "step": 15
+        }
+      ]
+    },
+    {
+      "trial": 9,
+      "committed": 1589,
+      "failed": 128,
+      "inflight": 0,
+      "routes": 1717,
+      "budgetSkips": 1327,
+      "budgetSkipRatio": 0.4359395532194481,
+      "maxBudgetSkipStreak": 13,
+      "maxRawRouteStreak": 4,
+      "maxRouteStreak": 3,
+      "singleFiniteQuoteRatio": 0.7082152974504249,
+      "isolated": 0,
+      "top1Share": 0.23296447291788003,
+      "hhi": 0.20419973752488477,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 53964.20481016243,
+      "commitGross": 515736.12279032276,
+      "clearingToCommitRatio": 0.10463530170854848,
+      "clientBalance": 7502.815480904287,
+      "firstBudgetSkipStep": 3,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "low_route_diversity",
+          "message": "singleFiniteQuoteRatio too high: 0.708 > 0.7 (observedTicks=353)",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "trial": 14,
+      "committed": 1192,
+      "failed": 153,
+      "inflight": 0,
+      "routes": 1345,
+      "budgetSkips": 1676,
+      "budgetSkipRatio": 0.5547831843760345,
+      "maxBudgetSkipStreak": 31,
+      "maxRawRouteStreak": 7,
+      "maxRouteStreak": 7,
+      "singleFiniteQuoteRatio": 0.16363636363636364,
+      "isolated": 0,
+      "top1Share": 0.30780669144981415,
+      "hhi": 0.22141042826937163,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 50616.80047945351,
+      "commitGross": 496834.6417763917,
+      "clearingToCommitRatio": 0.10187856526766585,
+      "clientBalance": 6272.429949820726,
+      "firstBudgetSkipStep": 2,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "budget_starvation",
+          "message": "budgetSkipRatio too high: 0.555 > 0.55",
+          "step": 2
+        },
+        {
+          "code": "budget_stall",
+          "message": "maxBudgetSkipStreak too high: 31 > 20",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "trial": 16,
+      "committed": 1374,
+      "failed": 132,
+      "inflight": 0,
+      "routes": 1506,
+      "budgetSkips": 1441,
+      "budgetSkipRatio": 0.48897183576518494,
+      "maxBudgetSkipStreak": 25,
+      "maxRawRouteStreak": 4,
+      "maxRouteStreak": 4,
+      "singleFiniteQuoteRatio": 0.24479166666666666,
+      "isolated": 0,
+      "top1Share": 0.28021248339973437,
+      "hhi": 0.22429626337500813,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 57241.379061568754,
+      "commitGross": 493439.2495184268,
+      "clearingToCommitRatio": 0.1160049167500024,
+      "clientBalance": 6401.025191250085,
+      "firstBudgetSkipStep": 4,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "budget_stall",
+          "message": "maxBudgetSkipStreak too high: 25 > 20",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "trial": 17,
+      "committed": 27,
+      "failed": 755,
+      "inflight": 0,
+      "routes": 782,
+      "budgetSkips": 2366,
+      "budgetSkipRatio": 0.7515883100381194,
+      "maxBudgetSkipStreak": 103,
+      "maxRawRouteStreak": 4,
+      "maxRouteStreak": 4,
+      "singleFiniteQuoteRatio": 0.04404145077720207,
+      "isolated": 3,
+      "top1Share": 0.2186700767263427,
+      "hhi": 0.18162492396046598,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 35630.86799721708,
+      "commitGross": 188361.64270868475,
+      "clearingToCommitRatio": 0.18916201560379708,
+      "clientBalance": 111638.35729131535,
+      "firstBudgetSkipStep": 3,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "budget_starvation",
+          "message": "budgetSkipRatio too high: 0.752 > 0.55",
+          "step": 3
+        },
+        {
+          "code": "budget_stall",
+          "message": "maxBudgetSkipStreak too high: 103 > 20",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "trial": 25,
+      "committed": 1646,
+      "failed": 90,
+      "inflight": 0,
+      "routes": 1736,
+      "budgetSkips": 1395,
+      "budgetSkipRatio": 0.44554455445544555,
+      "maxBudgetSkipStreak": 22,
+      "maxRawRouteStreak": 4,
+      "maxRouteStreak": 3,
+      "singleFiniteQuoteRatio": 0.7610619469026548,
+      "isolated": 0,
+      "top1Share": 0.22811059907834103,
+      "hhi": 0.20263158593302047,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 53759.827656869275,
+      "commitGross": 499470.2477110751,
+      "clearingToCommitRatio": 0.10763369370494982,
+      "clientBalance": 7409.704506466682,
+      "firstBudgetSkipStep": 2,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "budget_stall",
+          "message": "maxBudgetSkipStreak too high: 22 > 20",
+          "step": 2
+        },
+        {
+          "code": "low_route_diversity",
+          "message": "singleFiniteQuoteRatio too high: 0.761 > 0.7 (observedTicks=339)",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "trial": 26,
+      "committed": 825,
+      "failed": 120,
+      "inflight": 0,
+      "routes": 945,
+      "budgetSkips": 2100,
+      "budgetSkipRatio": 0.6896551724137931,
+      "maxBudgetSkipStreak": 25,
+      "maxRawRouteStreak": 9,
+      "maxRouteStreak": 9,
+      "singleFiniteQuoteRatio": 0.14795918367346939,
+      "isolated": 0,
+      "top1Share": 0.48994708994708996,
+      "hhi": 0.3918781669046219,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 61778.52921349048,
+      "commitGross": 405873.9184481149,
+      "clearingToCommitRatio": 0.15221113357001276,
+      "clientBalance": 7619.152650917924,
+      "firstBudgetSkipStep": 4,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "budget_starvation",
+          "message": "budgetSkipRatio too high: 0.690 > 0.55",
+          "step": 4
+        },
+        {
+          "code": "budget_stall",
+          "message": "maxBudgetSkipStreak too high: 25 > 20",
+          "step": 4
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "not_run",
+    "required": false,
+    "timeoutMs": 90000
+  }
+}

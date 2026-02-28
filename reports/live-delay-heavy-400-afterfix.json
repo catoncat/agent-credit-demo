@@ -1,0 +1,87 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 40,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "processingDelayMax": 7,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "reports/live-delay-heavy-400-afterfix.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 7
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 40
+  },
+  "averages": {
+    "committed": 1044.025,
+    "failed": 102.725,
+    "routes": 1146.75,
+    "budgetSkips": 71.825,
+    "budgetSkipRatio": 0.059274977312614475,
+    "maxBudgetSkipStreak": 4.25,
+    "maxRawRouteStreak": 5.825,
+    "maxRouteStreak": 5,
+    "singleFiniteQuoteRatio": 0.1481041002272719,
+    "top1Share": 0.3102879437213718,
+    "hhi": 0.2506953304256322,
+    "activeRouteNodes": 6,
+    "clearingOutflow": 151263.20169759146,
+    "commitGross": 1130698.115732479,
+    "clearingToCommitRatio": 0.13372257374561253,
+    "clientBalance": 8715.64071982917
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 13981
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "not_run",
+    "required": false,
+    "timeoutMs": 90000
+  }
+}

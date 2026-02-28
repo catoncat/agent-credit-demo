@@ -1,0 +1,86 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 40,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "reports/live-baseline-400-afterfix.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 40
+  },
+  "averages": {
+    "committed": 1102.175,
+    "failed": 112.875,
+    "routes": 1215.05,
+    "budgetSkips": 0.525,
+    "budgetSkipRatio": 0.00042968652295114504,
+    "maxBudgetSkipStreak": 0.125,
+    "maxRawRouteStreak": 5.65,
+    "maxRouteStreak": 5.6,
+    "singleFiniteQuoteRatio": 0.01441368678103514,
+    "top1Share": 0.3206722757498317,
+    "hhi": 0.2642520165187625,
+    "activeRouteNodes": 5.875,
+    "clearingOutflow": 146926.62491607445,
+    "commitGross": 1100385.9772611954,
+    "clearingToCommitRatio": 0.13429614072555435,
+    "clientBalance": 20832.38047618769
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 15581
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "not_run",
+    "required": false,
+    "timeoutMs": 90000
+  }
+}
