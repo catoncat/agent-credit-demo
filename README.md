@@ -83,8 +83,6 @@ export default defineConfig([
 - `bun run sim:gate2`
 - `bun run sim:gate3`
 - `bun run sim:gates`
-- `bun run sim:gate3:judge`（可选）
-- `bun run sim:gates:judge`（可选）
 
 ### Gate 设计（给循环器用）
 
@@ -115,18 +113,10 @@ bun run sim:gate2
 bun run sim:gate3
 ```
 
-### 可选 LLM Judge（解释层）
-
-Judge 不再是必填主门，作为可选解释层使用。
-
-```bash
-bun run sim:gate3:judge
-```
-
 默认阻断条件：
 
 - 结构失败与异常失败：来自 `failedTrials` + `anomalyTrials`
-- 若启用 Judge：`verdict=fail` 或 Judge 基础设施错误
+- Gate 流程不依赖 Judge 结论
 
 Verdict JSON：
 

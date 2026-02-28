@@ -15,8 +15,6 @@
     "sim:gate2": "bun run src/scripts/sim-autodiag.ts --steps 200 --trials 20 --mode ui --json-out reports/gate2-autodiag.json",
     "sim:gate3": "bun run src/scripts/sim-autodiag.ts --steps 400 --trials 20 --mode ui --json-out reports/gate3-autodiag.json",
     "sim:gates": "bun run sim:gate1 && bun run sim:gate2 && bun run sim:gate3",
-    "sim:gate3:judge": "bun run src/scripts/sim-autodiag.ts --steps 400 --trials 20 --mode ui --json-out reports/gate3-autodiag-judge.json --judge-cmd 'bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000'",
-    "sim:gates:judge": "bun run sim:gates && bun run sim:gate3:judge",
     "judge:codex": "bun run src/scripts/codex-judge.ts"
   },
   "dependencies": {

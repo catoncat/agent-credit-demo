@@ -107,20 +107,20 @@ export function DecisionInspector() {
   }, [bestPriceId, lastRoute, routeWinnerId]);
 
   return (
-    <section className="lg:h-full bg-[var(--sys-bg-panel)] border border-[var(--sys-border-default)] rounded-xl overflow-visible lg:overflow-hidden flex flex-col">
+    <section className="lg:h-full bg-[var(--sys-bg-panel)] border border-[var(--sys-border-default)] rounded-xl overflow-hidden flex flex-col">
       <div className="px-3 py-2 border-b border-[var(--sys-border-default)] flex items-center justify-between gap-2">
         <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">Routing Decision Panel</div>
         <span className="text-[11px] font-mono text-[color:var(--sys-text-secondary)]">Δy={probeDelta}</span>
       </div>
 
-      <div className="overflow-visible lg:min-h-0 lg:flex-1 lg:overflow-auto">
-        <table className="w-full min-w-[500px] table-fixed text-[11px] font-mono tabular-nums">
+      <div className="min-h-0 flex-1 overflow-x-auto lg:overflow-auto">
+        <table className="w-full min-w-[380px] md:min-w-[500px] table-fixed text-[11px] font-mono tabular-nums">
           <colgroup>
-            <col className="w-[120px]" />
-            <col className="w-[72px]" />
+            <col className="w-[126px]" />
+            <col className="w-[66px]" />
             <col className="w-[92px]" />
-            <col className="w-[64px]" />
-            <col className="w-[64px]" />
+            <col className="hidden md:table-column w-[64px]" />
+            <col className="hidden md:table-column w-[64px]" />
             <col className="w-[96px]" />
           </colgroup>
           <thead className="lg:sticky lg:top-0 z-10 bg-[var(--sys-bg-soft)] text-[color:var(--sys-text-muted)]">
@@ -128,8 +128,8 @@ export function DecisionInspector() {
               <th className="text-left px-3 py-1.5">Node</th>
               <th className="text-right px-2 py-1.5">free</th>
               <th className="text-right px-2 py-1.5">Δx</th>
-              <th className="text-right px-2 py-1.5">f</th>
-              <th className="text-right px-2 py-1.5">ŝ</th>
+              <th className="hidden md:table-cell text-right px-2 py-1.5">f</th>
+              <th className="hidden md:table-cell text-right px-2 py-1.5">ŝ</th>
               <th className="text-right px-3 py-1.5">P_eff</th>
             </tr>
           </thead>
@@ -148,24 +148,24 @@ export function DecisionInspector() {
                   className={rowClass}
                 >
                   <td className="px-3 py-1.5 text-[color:var(--sys-text-primary)]">
-                    <span className="inline-flex flex-col">
+                    <span className="inline-flex flex-col min-w-0">
                       <span className="inline-flex items-center gap-1">
                         <span>{row.id}</span>
                         {!row.available ? <span className="text-[10px] text-[color:var(--sys-text-muted)]">({row.unavailableReason})</span> : null}
-                        <span className="inline-flex items-center gap-1 min-w-[66px]">
+                        <span className="hidden md:inline-flex items-center gap-1 min-w-[66px]">
                           {isRouted ? <span className="text-[10px] text-[color:var(--sys-status-success)]">ROUTED</span> : null}
                           {isBest ? <span className="text-[10px] text-[color:var(--sys-status-idle)]">BEST</span> : null}
                         </span>
                       </span>
-                      <span className="text-[9px] text-[color:var(--sys-text-muted)]">
+                      <span className="hidden md:block text-[9px] text-[color:var(--sys-text-muted)]">
                         out={row.outcomes} · cold×{row.warmupMultiplier.toFixed(2)} · load×{row.loadMultiplier.toFixed(2)}
                       </span>
                     </span>
                   </td>
                   <td className="px-2 py-1.5 text-right text-[color:var(--sys-text-secondary)]">{fmt(row.freeQuota, 0)}</td>
                   <td className="px-2 py-1.5 text-right text-[color:var(--sys-text-secondary)]">{fmtAvailable(row.deltaX, row.available)}</td>
-                  <td className="px-2 py-1.5 text-right text-[color:var(--sys-text-secondary)]">{fmt(row.f, 2)}</td>
-                  <td className="px-2 py-1.5 text-right text-[color:var(--sys-text-secondary)]">{fmt(row.sHat, 2)}</td>
+                  <td className="hidden md:table-cell px-2 py-1.5 text-right text-[color:var(--sys-text-secondary)]">{fmt(row.f, 2)}</td>
+                  <td className="hidden md:table-cell px-2 py-1.5 text-right text-[color:var(--sys-text-secondary)]">{fmt(row.sHat, 2)}</td>
                   <td className="px-3 py-1.5 text-right font-semibold text-[color:var(--sys-text-primary)]">{fmtAvailable(row.pEff, row.available)}</td>
                 </tr>
               );

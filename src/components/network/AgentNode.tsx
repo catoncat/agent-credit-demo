@@ -32,7 +32,7 @@ export const AGENT_LABEL_PANEL_HEIGHT_COMPACT = 30;
 const AGENT_LABEL_PANEL_HORIZONTAL_GAP = 10;
 const AGENT_LABEL_PANEL_HORIZONTAL_GAP_COMPACT = 7;
 
-function compact(n: number): string {
+function formatCompact(n: number): string {
   const abs = Math.abs(n);
   if (abs >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}m`;
   if (abs >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
@@ -61,7 +61,7 @@ export function AgentNode({
   x,
   y,
   isRouteFocus = false,
-  compact = false,
+  compact: isCompact = false,
   labelSide = 'right',
   panelY,
   bounds,
@@ -73,7 +73,7 @@ export function AgentNode({
   const highlightedAgent = useSimulationStore(s => s.highlightedAgent);
   const color = STATUS_COLORS[agent.status] || COLORS.agent.idle;
   const isHighlighted = highlightedAgent === agent.id || isRouteFocus;
-  const radius = compact ? 30 : 38;
+  const radius = isCompact ? 30 : 38;
   const freeQuota = Math.max(0, agent.quota - agent.reservedQuota);
   const prevBalanceRef = useRef(agent.balance);
   const prevBalance = prevBalanceRef.current;
@@ -89,19 +89,21 @@ export function AgentNode({
       ? COLORS.agent.fail
       : COLORS.text.secondary;
   const primaryText = Math.abs(deltaBalance) > 0.0001
-    ? `ΔR ${deltaBalance > 0 ? '+' : ''}${compact(deltaBalance)}`
-    : `R ${compact(agent.balance)}`;
+    ? `ΔR ${deltaBalance > 0 ? '+' : ''}${formatCompact(deltaBalance)}`
+    : `R ${formatCompact(agent.balance)}`;
   const primaryTone = Math.abs(deltaBalance) > 0.0001
     ? (deltaBalance > 0 ? COLORS.agent.success : COLORS.agent.fail)
     : balanceTone;
-  const secondaryText = `s${agent.s_hat.toFixed(2)} q${compact(freeQuota)}`;
+  const secondaryText = `s${agent.s_hat.toFixed(2)} q${formatCompact(freeQuota)}`;
   const tertiaryText = `t${agent.activeTasks}/${agent.capacity} f${agent.f.toFixed(1)}`;
   const actionBadge = eventCount > 0 && lastAction ? `${lastAction}${eventCount > 1 ? `×${eventCount}` : ''}` : null;
   const badgeColor = actionColor(lastAction);
   const maxChars = Math.max(primaryText.length, secondaryText.length, tertiaryText.length);
-  const panelWidth = Math.max(88, Math.min(132, Math.round(maxChars * 5.8) + 14));
-  const panelHeight = compact ? AGENT_LABEL_PANEL_HEIGHT_COMPACT : AGENT_LABEL_PANEL_HEIGHT;
-  const panelGap = compact ? AGENT_LABEL_PANEL_HORIZONTAL_GAP_COMPACT : AGENT_LABEL_PANEL_HORIZONTAL_GAP;
+  const panelWidth = isCompact
+    ? Math.max(78, Math.min(114, Math.round(maxChars * 5.2) + 12))
+    : Math.max(88, Math.min(132, Math.round(maxChars * 5.8) + 14));
+  const panelHeight = isCompact ? AGENT_LABEL_PANEL_HEIGHT_COMPACT : AGENT_LABEL_PANEL_HEIGHT;
+  const panelGap = isCompact ? AGENT_LABEL_PANEL_HORIZONTAL_GAP_COMPACT : AGENT_LABEL_PANEL_HORIZONTAL_GAP;
   const rawPanelX = labelSide === 'right'
     ? x + radius + panelGap
     : x - radius - panelGap - panelWidth;
@@ -113,7 +115,7 @@ export function AgentNode({
   const panelTextX = labelSide === 'right' ? panelX + 7 : panelX + panelWidth - 7;
   const panelCenterY = resolvedPanelY + panelHeight / 2;
   const guideStartX = labelSide === 'right' ? x + radius : x - radius;
-  const guideMidX = guideStartX + (labelSide === 'right' ? (compact ? 4 : 6) : (compact ? -4 : -6));
+  const guideMidX = guideStartX + (labelSide === 'right' ? (isCompact ? 4 : 6) : (isCompact ? -4 : -6));
   const guideEndX = labelSide === 'right' ? panelX : panelX + panelWidth;
 
   return (
@@ -145,7 +147,7 @@ export function AgentNode({
           stroke={COLORS.accent}
           strokeWidth={2}
           initial={{ opacity: 0.2, r: radius + 2 }}
-          animate={{ opacity: [0.35, 0.05, 0.35], r: [radius + 2, radius + (compact ? 10 : 14), radius + 2] }}
+          animate={{ opacity: [0.35, 0.05, 0.35], r: [radius + 2, radius + (isCompact ? 10 : 14), radius + 2] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         />
       )}
@@ -184,7 +186,7 @@ export function AgentNode({
         </>
       )}
 
-      {!compact && actionBadge && (
+      {!isCompact && actionBadge && (
         <g>
           <rect
             x={x - Math.max(40, Math.min(84, Math.round(actionBadge.length * 5.2) + 10)) / 2}
@@ -212,10 +214,10 @@ export function AgentNode({
 
       <text
         x={x}
-        y={y + (compact ? 3 : 4)}
+        y={y + (isCompact ? 3 : 4)}
         textAnchor="middle"
         fill={COLORS.text.primary}
-        fontSize={compact ? 13 : 16}
+        fontSize={isCompact ? 13 : 16}
         fontWeight="700"
         fontFamily="IBM Plex Sans, Inter, sans-serif"
       >
@@ -246,10 +248,10 @@ export function AgentNode({
       <motion.text
         key={`primary-${agent.id}-${Math.round(deltaBalance * 100)}-${Math.round(agent.balance * 100)}`}
         x={panelTextX}
-        y={resolvedPanelY + (compact ? 10.5 : 12)}
+        y={resolvedPanelY + (isCompact ? 10.5 : 12)}
         textAnchor={panelTextAnchor}
         fill={primaryTone}
-        fontSize={compact ? 9.1 : 10.2}
+        fontSize={isCompact ? 9.1 : 10.2}
         fontFamily="JetBrains Mono, monospace"
         initial={{ opacity: 0.45, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -259,20 +261,20 @@ export function AgentNode({
       </motion.text>
       <text
         x={panelTextX}
-        y={resolvedPanelY + (compact ? 19 : 23)}
+        y={resolvedPanelY + (isCompact ? 19 : 23)}
         textAnchor={panelTextAnchor}
         fill={COLORS.text.secondary}
-        fontSize={compact ? 8.2 : 9.2}
+        fontSize={isCompact ? 8.2 : 9.2}
         fontFamily="JetBrains Mono, monospace"
       >
         {secondaryText}
       </text>
       <text
         x={panelTextX}
-        y={resolvedPanelY + (compact ? 27.2 : 33)}
+        y={resolvedPanelY + (isCompact ? 27.2 : 33)}
         textAnchor={panelTextAnchor}
         fill={agent.f > 0 ? COLORS.agent.fail : COLORS.text.muted}
-        fontSize={compact ? 7.8 : 8.8}
+        fontSize={isCompact ? 7.8 : 8.8}
         fontFamily="JetBrains Mono, monospace"
       >
         {tertiaryText}

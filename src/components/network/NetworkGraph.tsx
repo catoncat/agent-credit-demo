@@ -1,5 +1,5 @@
 import { useSimulationStore } from '../../store/simulationStore';
-import { AGENT_LABEL_PANEL_HEIGHT, AgentNode } from './AgentNode';
+import { AGENT_LABEL_PANEL_HEIGHT, AGENT_LABEL_PANEL_HEIGHT_COMPACT, AgentNode } from './AgentNode';
 import { GatewayNode } from './GatewayNode';
 import { ConnectionLine } from './ConnectionLine';
 import { TaskParticle, type ParticleStatus } from './TaskParticle';
@@ -49,12 +49,12 @@ function resolveLabelSide(nodeX: number, gatewayX: number): LabelSide {
 function solveSidePanelY(
   entries: Array<{ id: AgentId; idealCenterY: number }>,
   svgHeight: number,
+  panelHeight: number,
 ): Record<AgentId, number> {
   const result = {} as Record<AgentId, number>;
   if (!entries.length) return result;
 
   const sorted = [...entries].sort((a, b) => a.idealCenterY - b.idealCenterY);
-  const panelHeight = AGENT_LABEL_PANEL_HEIGHT;
   const minTop = LABEL_VERTICAL_PADDING;
   const maxTop = Math.max(minTop, svgHeight - LABEL_VERTICAL_PADDING - panelHeight);
   const count = sorted.length;
@@ -110,11 +110,15 @@ export function NetworkGraph() {
   const layout = useMemo(() => {
     const width = Math.max(Math.round(dimensions.width), 320);
     const height = Math.max(Math.round(dimensions.height), 260);
-    const centerX = width / 2;
-    const centerY = height / 2;
+    const compact = width < 500 || height < 340;
+    const ultraCompact = width < 420 || height < 300;
+    const viewScale = ultraCompact ? 1.22 : compact ? 1.1 : 1;
+    const svgWidth = Math.round(width * viewScale);
+    const svgHeight = Math.round(height * viewScale);
+    const centerX = svgWidth / 2;
+    const centerY = svgHeight / 2;
     const nodeCount = Math.max(agentIds.length, 1);
-    const compact = width < 560 || height < 360;
-    const ringRadius = Math.max(compact ? 72 : 96, Math.min(width, height) / 2 - (compact ? 78 : 88));
+    const ringRadius = Math.max(compact ? 84 : 96, Math.min(svgWidth, svgHeight) / 2 - (compact ? 94 : 88));
     const agentPositions = {} as Record<AgentId, { x: number; y: number; angle: number }>;
 
     agentIds.forEach((id, index) => {
@@ -127,10 +131,11 @@ export function NetworkGraph() {
     });
 
     return {
-      width,
-      height,
+      width: svgWidth,
+      height: svgHeight,
       gateway: { x: centerX, y: centerY },
       nodeCount,
+      compact,
       agentPositions,
     };
   }, [agentIds, dimensions.height, dimensions.width]);
@@ -167,7 +172,9 @@ export function NetworkGraph() {
           status: toParticleStatus(entry.action),
           delay: order * 0.05 + age * 0.08,
           duration: 0.75,
-          radius: entry.action === 'BURN' ? 3.8 : 3.2,
+          radius: entry.action === 'BURN'
+            ? (layout.compact ? 3.2 : 3.8)
+            : (layout.compact ? 2.8 : 3.2),
         };
       })
       .filter((item): item is {
@@ -179,7 +186,7 @@ export function NetworkGraph() {
         duration: number;
         radius: number;
       } => item !== null);
-  }, [layout.agentPositions, layout.gateway, recentEvents, tick]);
+  }, [layout.agentPositions, layout.compact, layout.gateway, recentEvents, tick]);
   const nodeEventSignals = useMemo(() => {
     const summary = {} as Record<AgentId, {
       eventCount: number;
@@ -214,13 +221,14 @@ export function NetworkGraph() {
       sideEntries[side].push({ id, idealCenterY: position.y });
     }
 
+    const panelHeight = layout.compact ? AGENT_LABEL_PANEL_HEIGHT_COMPACT : AGENT_LABEL_PANEL_HEIGHT;
     const panelYByAgent = {
-      ...solveSidePanelY(sideEntries.left, layout.height),
-      ...solveSidePanelY(sideEntries.right, layout.height),
+      ...solveSidePanelY(sideEntries.left, layout.height, panelHeight),
+      ...solveSidePanelY(sideEntries.right, layout.height, panelHeight),
     } as Record<AgentId, number>;
 
     return { sideByAgent, panelYByAgent };
-  }, [agentIds, layout.agentPositions, layout.gateway.x, layout.height]);
+  }, [agentIds, layout.agentPositions, layout.compact, layout.gateway.x, layout.height]);
 
   const comparedIds = priceComparison ? (Object.keys(priceComparison) as AgentId[]) : [];
   const lowestComparedPrice = priceComparison
@@ -308,7 +316,7 @@ export function NetworkGraph() {
                 loop
                 delay={delay}
                 duration={1.4}
-                radius={3.8}
+                radius={layout.compact ? 3.1 : 3.8}
               />
             ))}
             {focusAction === 'COMMIT' &&
@@ -321,7 +329,7 @@ export function NetworkGraph() {
                   loop
                   delay={delay}
                   duration={1.5}
-                  radius={3.4}
+                  radius={layout.compact ? 3 : 3.4}
                 />
               ))}
           </>
@@ -331,6 +339,7 @@ export function NetworkGraph() {
           x={layout.gateway.x}
           y={layout.gateway.y}
           isActive={activeAgentTasks.length > 0 || isFocusFresh || eventPulseParticles.length > 0}
+          compact={layout.compact}
         />
 
         {agentIds.map(id => {
@@ -344,6 +353,7 @@ export function NetworkGraph() {
               x={position.x}
               y={position.y}
               isRouteFocus={focusAgentId === id}
+              compact={layout.compact}
               labelSide={labelSide}
               panelY={labelLayout.panelYByAgent[id]}
               bounds={{ minX: 8, maxX: layout.width - 8 }}

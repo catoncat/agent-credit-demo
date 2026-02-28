@@ -66,10 +66,6 @@
 2. `bun run sim:gate2`
 3. `bun run sim:gate3`
 
-可选解释层：
-
-- `bun run sim:gate3:judge`
-
 ### 5.3 结果记录原则
 
 - 不在文档里写“固定 pass 快照”。
