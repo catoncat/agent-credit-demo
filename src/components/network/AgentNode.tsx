@@ -18,6 +18,7 @@ interface Props {
   x: number;
   y: number;
   isRouteFocus?: boolean;
+  compact?: boolean;
   labelSide?: 'left' | 'right';
   panelY?: number;
   bounds?: { minX: number; maxX: number };
@@ -27,7 +28,9 @@ interface Props {
 }
 
 export const AGENT_LABEL_PANEL_HEIGHT = 36;
+export const AGENT_LABEL_PANEL_HEIGHT_COMPACT = 30;
 const AGENT_LABEL_PANEL_HORIZONTAL_GAP = 10;
+const AGENT_LABEL_PANEL_HORIZONTAL_GAP_COMPACT = 7;
 
 function compact(n: number): string {
   const abs = Math.abs(n);
@@ -58,6 +61,7 @@ export function AgentNode({
   x,
   y,
   isRouteFocus = false,
+  compact = false,
   labelSide = 'right',
   panelY,
   bounds,
@@ -69,7 +73,7 @@ export function AgentNode({
   const highlightedAgent = useSimulationStore(s => s.highlightedAgent);
   const color = STATUS_COLORS[agent.status] || COLORS.agent.idle;
   const isHighlighted = highlightedAgent === agent.id || isRouteFocus;
-  const radius = 38;
+  const radius = compact ? 30 : 38;
   const freeQuota = Math.max(0, agent.quota - agent.reservedQuota);
   const prevBalanceRef = useRef(agent.balance);
   const prevBalance = prevBalanceRef.current;
@@ -96,10 +100,11 @@ export function AgentNode({
   const badgeColor = actionColor(lastAction);
   const maxChars = Math.max(primaryText.length, secondaryText.length, tertiaryText.length);
   const panelWidth = Math.max(88, Math.min(132, Math.round(maxChars * 5.8) + 14));
-  const panelHeight = AGENT_LABEL_PANEL_HEIGHT;
+  const panelHeight = compact ? AGENT_LABEL_PANEL_HEIGHT_COMPACT : AGENT_LABEL_PANEL_HEIGHT;
+  const panelGap = compact ? AGENT_LABEL_PANEL_HORIZONTAL_GAP_COMPACT : AGENT_LABEL_PANEL_HORIZONTAL_GAP;
   const rawPanelX = labelSide === 'right'
-    ? x + radius + AGENT_LABEL_PANEL_HORIZONTAL_GAP
-    : x - radius - AGENT_LABEL_PANEL_HORIZONTAL_GAP - panelWidth;
+    ? x + radius + panelGap
+    : x - radius - panelGap - panelWidth;
   const panelX = bounds
     ? Math.max(bounds.minX, Math.min(rawPanelX, bounds.maxX - panelWidth))
     : rawPanelX;
@@ -108,7 +113,7 @@ export function AgentNode({
   const panelTextX = labelSide === 'right' ? panelX + 7 : panelX + panelWidth - 7;
   const panelCenterY = resolvedPanelY + panelHeight / 2;
   const guideStartX = labelSide === 'right' ? x + radius : x - radius;
-  const guideMidX = guideStartX + (labelSide === 'right' ? 6 : -6);
+  const guideMidX = guideStartX + (labelSide === 'right' ? (compact ? 4 : 6) : (compact ? -4 : -6));
   const guideEndX = labelSide === 'right' ? panelX : panelX + panelWidth;
 
   return (
@@ -140,7 +145,7 @@ export function AgentNode({
           stroke={COLORS.accent}
           strokeWidth={2}
           initial={{ opacity: 0.2, r: radius + 2 }}
-          animate={{ opacity: [0.35, 0.05, 0.35], r: [radius + 2, radius + 14, radius + 2] }}
+          animate={{ opacity: [0.35, 0.05, 0.35], r: [radius + 2, radius + (compact ? 10 : 14), radius + 2] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         />
       )}
@@ -179,7 +184,7 @@ export function AgentNode({
         </>
       )}
 
-      {actionBadge && (
+      {!compact && actionBadge && (
         <g>
           <rect
             x={x - Math.max(40, Math.min(84, Math.round(actionBadge.length * 5.2) + 10)) / 2}
@@ -205,7 +210,15 @@ export function AgentNode({
         </g>
       )}
 
-      <text x={x} y={y + 4} textAnchor="middle" fill={COLORS.text.primary} fontSize="16" fontWeight="700" fontFamily="IBM Plex Sans, Inter, sans-serif">
+      <text
+        x={x}
+        y={y + (compact ? 3 : 4)}
+        textAnchor="middle"
+        fill={COLORS.text.primary}
+        fontSize={compact ? 13 : 16}
+        fontWeight="700"
+        fontFamily="IBM Plex Sans, Inter, sans-serif"
+      >
         {agent.id}
       </text>
 
@@ -233,10 +246,10 @@ export function AgentNode({
       <motion.text
         key={`primary-${agent.id}-${Math.round(deltaBalance * 100)}-${Math.round(agent.balance * 100)}`}
         x={panelTextX}
-        y={resolvedPanelY + 12}
+        y={resolvedPanelY + (compact ? 10.5 : 12)}
         textAnchor={panelTextAnchor}
         fill={primaryTone}
-        fontSize="10.2"
+        fontSize={compact ? 9.1 : 10.2}
         fontFamily="JetBrains Mono, monospace"
         initial={{ opacity: 0.45, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -246,20 +259,20 @@ export function AgentNode({
       </motion.text>
       <text
         x={panelTextX}
-        y={resolvedPanelY + 23}
+        y={resolvedPanelY + (compact ? 19 : 23)}
         textAnchor={panelTextAnchor}
         fill={COLORS.text.secondary}
-        fontSize="9.2"
+        fontSize={compact ? 8.2 : 9.2}
         fontFamily="JetBrains Mono, monospace"
       >
         {secondaryText}
       </text>
       <text
         x={panelTextX}
-        y={resolvedPanelY + 33}
+        y={resolvedPanelY + (compact ? 27.2 : 33)}
         textAnchor={panelTextAnchor}
         fill={agent.f > 0 ? COLORS.agent.fail : COLORS.text.muted}
-        fontSize="8.8"
+        fontSize={compact ? 7.8 : 8.8}
         fontFamily="JetBrains Mono, monospace"
       >
         {tertiaryText}

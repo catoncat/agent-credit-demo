@@ -44,22 +44,22 @@
     "totalTrials": 20
   },
   "averages": {
-    "committed": 555.15,
-    "failed": 43.65,
-    "routes": 598.8,
+    "committed": 568.2,
+    "failed": 39.85,
+    "routes": 608.05,
     "budgetSkips": 0,
     "budgetSkipRatio": 0,
     "maxBudgetSkipStreak": 0,
-    "maxRawRouteStreak": 26.4,
-    "maxRouteStreak": 6.15,
-    "singleFiniteQuoteRatio": 0.11462712773740429,
-    "top1Share": 0.3971669213329422,
-    "hhi": 0.3604599678173679,
-    "activeRouteNodes": 3.55,
-    "clearingOutflow": 63991.58990182442,
-    "commitGross": 1066732.2937258303,
-    "clearingToCommitRatio": 0.05998567570712029,
-    "clientBalance": 8913.329807903063
+    "maxRawRouteStreak": 11,
+    "maxRouteStreak": 5.6,
+    "singleFiniteQuoteRatio": 0.09739197855525575,
+    "top1Share": 0.3685215580920119,
+    "hhi": 0.3158120284713843,
+    "activeRouteNodes": 4.7,
+    "clearingOutflow": 68581.48352358722,
+    "commitGross": 1070106.1351168682,
+    "clearingToCommitRatio": 0.06412607249703241,
+    "clientBalance": 8631.800178937865
   },
   "issueCounts": {
     "no_route": 0,
@@ -72,7 +72,7 @@
     "low_route_diversity": 0
   },
   "routeShares": {
-    "DOMINANT": 4691
+    "DOMINANT": 4476
   },
   "rootCauses": [
     "未发现显著结构性异常，当前配置在给定阈值内稳定。"

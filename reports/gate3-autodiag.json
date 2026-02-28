@@ -40,75 +40,44 @@
   },
   "totals": {
     "failedTrials": 0,
-    "anomalyTrials": 1,
+    "anomalyTrials": 0,
     "totalTrials": 20
   },
   "averages": {
-    "committed": 1087.15,
-    "failed": 88.95,
-    "routes": 1176.1,
+    "committed": 1136.35,
+    "failed": 74.2,
+    "routes": 1210.55,
     "budgetSkips": 0,
     "budgetSkipRatio": 0,
     "maxBudgetSkipStreak": 0,
-    "maxRawRouteStreak": 28.95,
-    "maxRouteStreak": 6.55,
-    "singleFiniteQuoteRatio": 0.08276604107255288,
-    "top1Share": 0.3839483315855675,
-    "hhi": 0.3463902265218258,
-    "activeRouteNodes": 4.6,
-    "clearingOutflow": 134274.50226184662,
-    "commitGross": 1153464.087883232,
-    "clearingToCommitRatio": 0.11631812525255385,
-    "clientBalance": 8856.65405855678
+    "maxRawRouteStreak": 11.35,
+    "maxRouteStreak": 5.9,
+    "singleFiniteQuoteRatio": 0.07701134525881756,
+    "top1Share": 0.3432925219676096,
+    "hhi": 0.3034374808501343,
+    "activeRouteNodes": 5.5,
+    "clearingOutflow": 144259.6099620645,
+    "commitGross": 1161070.1116583298,
+    "clearingToCommitRatio": 0.12428330692068068,
+    "clientBalance": 8936.297517871555
   },
   "issueCounts": {
     "no_route": 0,
     "inflight_not_drained": 0,
     "all_isolated": 0,
     "invalid_state": 0,
-    "node_absorption": 1,
+    "node_absorption": 0,
     "budget_starvation": 0,
     "budget_stall": 0,
     "low_route_diversity": 0
   },
   "routeShares": {
-    "DOMINANT": 8666
+    "DOMINANT": 8301
   },
   "rootCauses": [
     "未发现显著结构性异常，当前配置在给定阈值内稳定。"
   ],
-  "samples": [
-    {
-      "trial": 1,
-      "committed": 426,
-      "failed": 94,
-      "inflight": 0,
-      "routes": 520,
-      "budgetSkips": 0,
-      "budgetSkipRatio": 0,
-      "maxBudgetSkipStreak": 0,
-      "maxRawRouteStreak": 438,
-      "maxRouteStreak": 12,
-      "singleFiniteQuoteRatio": 0.3175,
-      "isolated": 0,
-      "top1Share": 0.9115384615384615,
-      "hhi": 0.8348446745562129,
-      "activeRouteNodes": 3,
-      "clearingOutflow": 124051.410443319,
-      "commitGross": 1056695.4524464402,
-      "clearingToCommitRatio": 0.11739561304642472,
-      "clientBalance": 9000,
-      "firstBudgetSkipStep": null,
-      "firstDominantStep": 32,
-      "issues": [
-        {
-          "code": "node_absorption",
-          "message": "maxRouteStreak too high: 12 >= 12",
-          "step": 209
-        }
-      ]
-    }
-  ],
+  "samples": [],
   "judge": {
     "status": "not_run",
     "required": false,

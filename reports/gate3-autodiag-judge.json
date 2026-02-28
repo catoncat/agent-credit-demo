@@ -41,75 +41,44 @@
   },
   "totals": {
     "failedTrials": 0,
-    "anomalyTrials": 1,
+    "anomalyTrials": 0,
     "totalTrials": 20
   },
   "averages": {
-    "committed": 1087.15,
-    "failed": 88.95,
-    "routes": 1176.1,
+    "committed": 1136.35,
+    "failed": 74.2,
+    "routes": 1210.55,
     "budgetSkips": 0,
     "budgetSkipRatio": 0,
     "maxBudgetSkipStreak": 0,
-    "maxRawRouteStreak": 28.95,
-    "maxRouteStreak": 6.55,
-    "singleFiniteQuoteRatio": 0.08276604107255288,
-    "top1Share": 0.3839483315855675,
-    "hhi": 0.3463902265218258,
-    "activeRouteNodes": 4.6,
-    "clearingOutflow": 134274.50226184662,
-    "commitGross": 1153464.087883232,
-    "clearingToCommitRatio": 0.11631812525255385,
-    "clientBalance": 8856.65405855678
+    "maxRawRouteStreak": 11.35,
+    "maxRouteStreak": 5.9,
+    "singleFiniteQuoteRatio": 0.07701134525881756,
+    "top1Share": 0.3432925219676096,
+    "hhi": 0.3034374808501343,
+    "activeRouteNodes": 5.5,
+    "clearingOutflow": 144259.6099620645,
+    "commitGross": 1161070.1116583298,
+    "clearingToCommitRatio": 0.12428330692068068,
+    "clientBalance": 8936.297517871555
   },
   "issueCounts": {
     "no_route": 0,
     "inflight_not_drained": 0,
     "all_isolated": 0,
     "invalid_state": 0,
-    "node_absorption": 1,
+    "node_absorption": 0,
     "budget_starvation": 0,
     "budget_stall": 0,
     "low_route_diversity": 0
   },
   "routeShares": {
-    "DOMINANT": 8666
+    "DOMINANT": 8301
   },
   "rootCauses": [
     "未发现显著结构性异常，当前配置在给定阈值内稳定。"
   ],
-  "samples": [
-    {
-      "trial": 1,
-      "committed": 426,
-      "failed": 94,
-      "inflight": 0,
-      "routes": 520,
-      "budgetSkips": 0,
-      "budgetSkipRatio": 0,
-      "maxBudgetSkipStreak": 0,
-      "maxRawRouteStreak": 438,
-      "maxRouteStreak": 12,
-      "singleFiniteQuoteRatio": 0.3175,
-      "isolated": 0,
-      "top1Share": 0.9115384615384615,
-      "hhi": 0.8348446745562129,
-      "activeRouteNodes": 3,
-      "clearingOutflow": 124051.410443319,
-      "commitGross": 1056695.4524464402,
-      "clearingToCommitRatio": 0.11739561304642472,
-      "clientBalance": 9000,
-      "firstBudgetSkipStep": null,
-      "firstDominantStep": 32,
-      "issues": [
-        {
-          "code": "node_absorption",
-          "message": "maxRouteStreak too high: 12 >= 12",
-          "step": 209
-        }
-      ]
-    }
-  ],
+  "samples": [],
   "judge": {
     "status": "ok",
     "required": true,
@@ -125,19 +94,19 @@
     },
     "verdict": {
       "verdict": "pass",
-      "reason": "平均指标全部低于失败阈值，且无结构性不变量破坏；仅有一次吸附异常。",
-      "confidence": 0.86,
+      "reason": "关键失败条件均未触发，且未见结构性异常。",
+      "confidence": 0.93,
       "findings": [
-        "avg top1Share=0.384、avg hhi=0.346，均低于FAIL阈值(0.72/0.60)。",
-        "avg budgetSkipRatio=0、avg maxBudgetSkipStreak=0、avg maxRouteStreak=6.55，稳定性达标。",
-        "avg singleFiniteQuoteRatio=0.083、avg clearingToCommitRatio=0.116，未见长期单候选或清算异常放大。",
-        "20次试验仅1次异常（node_absorption）；样本trial中top1Share=0.912、hhi=0.835、maxRouteStreak=12为尖峰，不构成“持续性”垄断证据。",
-        "deterministicBlocking=true 仅为信号，不构成自动FAIL。"
+        "top1Share=0.3433、hhi=0.3034，均低于失败阈值(0.72/0.60)，无明显垄断证据。",
+        "budgetSkipRatio=0、maxBudgetSkipStreak=0，未出现预算跳过与预算饥饿。",
+        "maxRouteStreak=5.9(<10)，路由连续偏置未达失败线。",
+        "singleFiniteQuoteRatio=0.0770(<0.55)，价格面未出现长期单候选退化。",
+        "clearingToCommitRatio=0.1243(<0.30)，清算/提交比例正常；issueCounts全为0，未见不变量破坏。"
       ],
       "suggestedActions": [
-        "回放异常trial（step 32后主导上升、step 209触发吸附）定位根因。",
-        "补充P95/P99告警（top1Share/HHI/maxRouteStreak），避免均值掩盖尾部风险。",
-        "加入短窗去吸附约束并扩容复测（>=100 trials）验证稳健性。"
+        "继续按epoch跟踪top1Share、hhi、maxRouteStreak的趋势，防止后续漂移触阈。",
+        "补充样本级输出（sampleHead/sampleCount）用于异常发现质量复核。",
+        "持续保留并抽检验收与日志证据链，确保质量隔离与审计可验证性。"
       ]
     }
   }
