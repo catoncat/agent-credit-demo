@@ -1,0 +1,86 @@
+{
+  "options": {
+    "steps": 60,
+    "trials": 6,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "reports/tmp-autodiag-nojudge.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 6
+  },
+  "averages": {
+    "committed": 166.33333333333334,
+    "failed": 15.666666666666666,
+    "routes": 182,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "maxRawRouteStreak": 21.5,
+    "maxRouteStreak": 4.666666666666667,
+    "singleFiniteQuoteRatio": 0.23860727086533537,
+    "top1Share": 0.4661161871880961,
+    "hhi": 0.38954991211464507,
+    "activeRouteNodes": 3,
+    "clearingOutflow": 14114.452036806188,
+    "commitGross": 1005825.9913555718,
+    "clearingToCommitRatio": 0.014037802409369545,
+    "clientBalance": 7196.643249759439
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 507
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "not_run",
+    "required": false,
+    "timeoutMs": 90000
+  }
+}

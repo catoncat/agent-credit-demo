@@ -70,13 +70,13 @@ export function AppShell({ currentView, onOpenDocs, onOpenSimulation }: AppShell
           type="button"
           aria-label="Close events sidebar overlay"
           onClick={() => setIsEventSidebarOpen(false)}
-          className="absolute inset-0 z-40 bg-black/25"
+          className="fixed inset-0 z-40 bg-black/25"
         />
       )}
 
       {!isDocsView && (
         <aside
-          className={`absolute inset-y-0 right-0 z-50 w-full max-w-[460px] transform-gpu transition-transform duration-200 ease-out ${
+          className={`fixed inset-y-0 right-0 z-50 w-full max-w-[460px] transform-gpu transition-transform duration-200 ease-out ${
             isEventSidebarOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
           }`}
         >
