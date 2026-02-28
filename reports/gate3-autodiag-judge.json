@@ -1,0 +1,144 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/gate3-autodiag-judge.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 1,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 1087.15,
+    "failed": 88.95,
+    "routes": 1176.1,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "maxRawRouteStreak": 28.95,
+    "maxRouteStreak": 6.55,
+    "singleFiniteQuoteRatio": 0.08276604107255288,
+    "top1Share": 0.3839483315855675,
+    "hhi": 0.3463902265218258,
+    "activeRouteNodes": 4.6,
+    "clearingOutflow": 134274.50226184662,
+    "commitGross": 1153464.087883232,
+    "clearingToCommitRatio": 0.11631812525255385,
+    "clientBalance": 8856.65405855678
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 1,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 8666
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 1,
+      "committed": 426,
+      "failed": 94,
+      "inflight": 0,
+      "routes": 520,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 438,
+      "maxRouteStreak": 12,
+      "singleFiniteQuoteRatio": 0.3175,
+      "isolated": 0,
+      "top1Share": 0.9115384615384615,
+      "hhi": 0.8348446745562129,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 124051.410443319,
+      "commitGross": 1056695.4524464402,
+      "clearingToCommitRatio": 0.11739561304642472,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 32,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 12 >= 12",
+          "step": 209
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "平均指标全部低于失败阈值，且无结构性不变量破坏；仅有一次吸附异常。",
+      "confidence": 0.86,
+      "findings": [
+        "avg top1Share=0.384、avg hhi=0.346，均低于FAIL阈值(0.72/0.60)。",
+        "avg budgetSkipRatio=0、avg maxBudgetSkipStreak=0、avg maxRouteStreak=6.55，稳定性达标。",
+        "avg singleFiniteQuoteRatio=0.083、avg clearingToCommitRatio=0.116，未见长期单候选或清算异常放大。",
+        "20次试验仅1次异常（node_absorption）；样本trial中top1Share=0.912、hhi=0.835、maxRouteStreak=12为尖峰，不构成“持续性”垄断证据。",
+        "deterministicBlocking=true 仅为信号，不构成自动FAIL。"
+      ],
+      "suggestedActions": [
+        "回放异常trial（step 32后主导上升、step 209触发吸附）定位根因。",
+        "补充P95/P99告警（top1Share/HHI/maxRouteStreak），避免均值掩盖尾部风险。",
+        "加入短窗去吸附约束并扩容复测（>=100 trials）验证稳健性。"
+      ]
+    }
+  }
+}

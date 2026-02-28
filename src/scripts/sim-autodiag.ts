@@ -1067,38 +1067,36 @@ function main(): void {
   }
 
   const report = aggregate(results, options, policy);
-  if (!options.judgeCmd) {
-    throw new Error('--judge-cmd is required');
-  }
-
   const deterministicBlocking = report.totals.failedTrials > 0 || report.totals.anomalyTrials > 0;
   const judgeRun: JudgeRunResult = {
     status: 'not_run',
-    required: true,
+    required: Boolean(options.judgeCmd),
     timeoutMs: options.judgeTimeoutMs,
     cmd: options.judgeCmd,
   };
-  const whitepaper = loadWhitepaperContext(options);
-  if (whitepaper) {
-    judgeRun.whitepaper = {
-      path: whitepaper.path,
-      included: whitepaper.included,
-      mode: whitepaper.mode,
-      sourceChars: whitepaper.sourceChars,
-      excerptChars: whitepaper.excerptChars,
-      truncated: whitepaper.truncated,
-      error: whitepaper.error,
-    };
-  }
-  const judgeInput = buildJudgeInput(report, deterministicBlocking, whitepaper);
-  try {
-    const judgeResult = runJudgeCmd(options.judgeCmd, judgeInput, options.judgeTimeoutMs);
-    judgeRun.status = 'ok';
-    judgeRun.verdict = judgeResult.verdict;
-    judgeRun.stderr = judgeResult.stderr || undefined;
-  } catch (error) {
-    judgeRun.status = 'error';
-    judgeRun.error = error instanceof Error ? error.message : String(error);
+  if (options.judgeCmd) {
+    const whitepaper = loadWhitepaperContext(options);
+    if (whitepaper) {
+      judgeRun.whitepaper = {
+        path: whitepaper.path,
+        included: whitepaper.included,
+        mode: whitepaper.mode,
+        sourceChars: whitepaper.sourceChars,
+        excerptChars: whitepaper.excerptChars,
+        truncated: whitepaper.truncated,
+        error: whitepaper.error,
+      };
+    }
+    const judgeInput = buildJudgeInput(report, deterministicBlocking, whitepaper);
+    try {
+      const judgeResult = runJudgeCmd(options.judgeCmd, judgeInput, options.judgeTimeoutMs);
+      judgeRun.status = 'ok';
+      judgeRun.verdict = judgeResult.verdict;
+      judgeRun.stderr = judgeResult.stderr || undefined;
+    } catch (error) {
+      judgeRun.status = 'error';
+      judgeRun.error = error instanceof Error ? error.message : String(error);
+    }
   }
   report.judge = judgeRun;
 
@@ -1116,12 +1114,8 @@ function main(): void {
   }
 
   const judgeBlocking = report.judge?.status === 'ok' && report.judge.verdict?.verdict === 'fail';
-  const judgeInfraBlocking = report.judge?.status === 'error';
-  const structuralBlocking = report.issueCounts.invalid_state > 0
-    || report.issueCounts.no_route > 0
-    || report.issueCounts.inflight_not_drained > 0
-    || report.issueCounts.all_isolated > 0;
-  const hasBlocking = structuralBlocking || judgeBlocking || judgeInfraBlocking;
+  const judgeInfraBlocking = Boolean(options.judgeCmd) && report.judge?.status === 'error';
+  const hasBlocking = deterministicBlocking || judgeBlocking || judgeInfraBlocking;
   if (hasBlocking && !options.allowFailures) {
     throw new Error('sim-autodiag found blocking issues (structural and/or judge)');
   }

@@ -86,6 +86,7 @@
 
 ## 7. 当前门禁状态
 
-- `sim:autodiag`（200/400 步）当前可通过，Judge=pass。
-- `sim:selftest` 已切换为并发语义门禁（`commitRate/failureRate/routesPerStep`）。
-- 当前三道并发门（100/200/400）均可通过。
+- 统一入口：`sim:gates`（Gate1 -> Gate2 -> Gate3）。
+- Gate1：`sim-selftest`（并发语义硬门：`commitRate/failureRate/routesPerStep`）。
+- Gate2/3：`sim-autodiag`（结构 + 异常门；Judge 可选）。
+- 运行状态不在文档静态声明，以最新 `reports/gate*.json` 实测为准。

@@ -79,58 +79,54 @@ export default defineConfig([
 
 ## Simulation Commands
 
-- `bun run sim:selftest`
-- `bun run sim:autodiag`
+- `bun run sim:gate1`
+- `bun run sim:gate2`
+- `bun run sim:gate3`
+- `bun run sim:gates`
+- `bun run sim:gate3:judge`（可选）
+- `bun run sim:gates:judge`（可选）
 
-### Selftest（并发语义门禁）
+### Gate 设计（给循环器用）
 
-推荐三道门：
+- Gate1：并发语义硬门（短程）
+- Gate2：异常诊断硬门（中程）
+- Gate3：异常诊断硬门（长程）
+- `sim:gates` 按顺序执行 1 -> 2 -> 3，任一失败即中断。
 
 ```bash
-bun run sim:selftest \
-  --steps 100 --trials 50 \
-  --min-commit-rate 0.80 \
-  --max-failure-rate 0.20 \
-  --min-routes-per-step 1.8
+bun run sim:gates
 ```
 
+### Selftest（Gate1）
+
+默认零容忍（`max-failed-trial-ratio=0`），不再放过尾部失败。
+
 ```bash
-bun run sim:selftest \
-  --steps 200 --trials 50 --client-balance 1000000 \
-  --min-commit-rate 0.84 \
-  --max-failure-rate 0.16 \
-  --min-routes-per-step 2.2
+bun run sim:gate1
 ```
 
+### AutoDiag（Gate2/3）
+
+`sim:autodiag` 现在默认不强制 Judge。  
+阻断依据优先使用结构/异常统计（`failedTrials` + `anomalyTrials`）。
+
 ```bash
-bun run sim:selftest \
-  --steps 400 --trials 20 --client-balance 2000000 \
-  --min-commit-rate 0.86 \
-  --max-failure-rate 0.15 \
-  --min-routes-per-step 2.4
+bun run sim:gate2
+bun run sim:gate3
 ```
 
-### AutoDiag（Judge 主路径）
+### 可选 LLM Judge（解释层）
 
-`sim:autodiag` 必须提供 `--judge-cmd`。脚本会把诊断 JSON 通过 stdin 传给 judge，读取 stdout verdict。
-
-示例（Codex Judge）：
+Judge 不再是必填主门，作为可选解释层使用。
 
 ```bash
-bun run sim:autodiag \
-  --steps 200 \
-  --trials 50 \
-  --mode ui \
-  --judge-cmd 'bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000' \
-  --whitepaper-path ../whitepaper.md \
-  --json-out reports/autodiag-codex.json
+bun run sim:gate3:judge
 ```
 
 默认阻断条件：
 
-- 结构性失败：`invalid_state` / `no_route` / `inflight_not_drained` / `all_isolated`
-- Judge 失败：`verdict=fail`
-- Judge 基础设施失败：judge 命令执行错误
+- 结构失败与异常失败：来自 `failedTrials` + `anomalyTrials`
+- 若启用 Judge：`verdict=fail` 或 Judge 基础设施错误
 
 Verdict JSON：
 

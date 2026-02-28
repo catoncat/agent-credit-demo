@@ -118,7 +118,7 @@ function parseOptions(): CliOptions {
     minCommitRate: Math.min(Math.max(parseNumberFlag('--min-commit-rate', 0.82), 0), 1),
     maxFailureRate: Math.min(Math.max(parseNumberFlag('--max-failure-rate', 0.18), 0), 1),
     minRoutesPerStep: Math.max(0, parseNumberFlag('--min-routes-per-step', 1.8)),
-    maxFailedTrialRatio: Math.min(Math.max(parseNumberFlag('--max-failed-trial-ratio', 0.05), 0), 1),
+    maxFailedTrialRatio: Math.min(Math.max(parseNumberFlag('--max-failed-trial-ratio', 0), 0), 1),
     verbose: argv.includes('--verbose'),
     obsGate: argv.includes('--obs-gate'),
     obsMaxTop1Share: parseNumberFlag('--obs-max-top1-share', 1),

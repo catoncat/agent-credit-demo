@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useSimulationStore } from '../../store/simulationStore';
 import type { AppView } from './AppShell';
 
+const REPO_URL = 'https://github.com/catoncat/agent-credit-demo';
+
 interface ControlBarProps {
   currentView: AppView;
   isEventSidebarOpen: boolean;
@@ -47,6 +49,8 @@ export function ControlBar({
     'h-9 px-3 rounded-md border border-[var(--sys-border-default)] text-sm font-medium text-[color:var(--sys-text-secondary)] hover:text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] transition-colors inline-flex items-center justify-center shrink-0';
   const returnBtnClass =
     'h-9 px-3 rounded-md border border-[var(--sys-border-default)] bg-white text-sm font-medium text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] transition-colors inline-flex items-center justify-center gap-1.5 shrink-0';
+  const githubBtnClass =
+    'h-9 min-w-9 px-2 rounded-md border border-[var(--sys-border-default)] text-[color:var(--sys-text-secondary)] hover:text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] transition-colors inline-flex items-center justify-center shrink-0';
 
   return (
     <div
@@ -172,18 +176,23 @@ export function ControlBar({
                 className={iconBtnClass}
               >
                 <svg
-                  viewBox="0 0 16 16"
+                  viewBox="0 0 20 20"
                   className="h-[18px] w-[18px]"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.8"
+                  strokeWidth="1.7"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden="true"
                 >
-                  <path d="M8 3.5v6" />
-                  <path d="M5 6.5h6" />
-                  <circle cx="10.75" cy="10.75" r="2.75" />
+                  <circle cx="5" cy="6" r="1.7" />
+                  <circle cx="12" cy="6.5" r="1.7" />
+                  <circle cx="7.5" cy="13" r="1.7" />
+                  <path d="M6.6 6.3 10.4 6.4" />
+                  <path d="M5.8 7.3 6.8 11.3" />
+                  <path d="M10.9 7.8 8.8 11.7" />
+                  <path d="M15.5 12.6h3.2" />
+                  <path d="M17.1 11v3.2" />
                 </svg>
               </button>
 
@@ -249,6 +258,24 @@ export function ControlBar({
             '文档'
           )}
         </button>
+
+        <a
+          href={REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="GitHub 仓库"
+          aria-label="GitHub 仓库"
+          className={githubBtnClass}
+        >
+          <svg
+            viewBox="0 0 16 16"
+            className="h-4 w-4"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M8 1.3a6.7 6.7 0 0 0-2.12 13.06c.34.06.47-.14.47-.33v-1.2c-1.9.41-2.3-.8-2.3-.8-.3-.75-.73-.95-.73-.95-.6-.4.04-.4.04-.4.67.04 1.02.69 1.02.69.59 1.01 1.55.72 1.93.55.06-.43.23-.72.42-.89-1.52-.17-3.12-.76-3.12-3.4 0-.75.26-1.36.69-1.84-.07-.17-.3-.87.06-1.82 0 0 .56-.18 1.86.7a6.36 6.36 0 0 1 3.39 0c1.3-.88 1.86-.7 1.86-.7.36.95.13 1.65.06 1.82.43.48.69 1.09.69 1.84 0 2.65-1.6 3.22-3.13 3.39.25.22.46.66.46 1.34v1.99c0 .19.12.39.48.33A6.7 6.7 0 0 0 8 1.3Z" />
+          </svg>
+        </a>
       </div>
     </div>
   );

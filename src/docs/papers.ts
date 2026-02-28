@@ -20,25 +20,55 @@ export interface PaperHeading {
   title: string;
 }
 
-function normalizeInlineParenMath(markdown: string): string {
+function isLikelyInlineMath(content: string): boolean {
+  const normalized = content.trim();
+  if (!normalized || normalized.length > 96) return false;
+  if (/[\u4e00-\u9fff]/.test(normalized)) return false;
+
+  if (/\\[A-Za-z]+/.test(normalized)) return true;
+  if (/(?:->|[=^_<>±·⋅])/u.test(normalized)) return true;
+  if (/^[A-Za-z]$/.test(normalized)) return true;
+  if (/^[A-Za-z](\s*,\s*[A-Za-z])+$/u.test(normalized)) return true;
+
+  return false;
+}
+
+function convertInlineParenMathInLine(line: string): string {
   let output = '';
   let cursor = 0;
+  let inInlineMath = false;
 
-  while (cursor < markdown.length) {
-    if (markdown[cursor] !== '(') {
-      output += markdown[cursor];
+  while (cursor < line.length) {
+    const char = line[cursor];
+
+    if (char === '$' && line[cursor - 1] !== '\\') {
+      inInlineMath = !inInlineMath;
+      output += char;
+      cursor += 1;
+      continue;
+    }
+
+    if (inInlineMath || char !== '(') {
+      output += char;
       cursor += 1;
       continue;
     }
 
     let depth = 0;
     let end = -1;
+    for (let idx = cursor; idx < line.length; idx += 1) {
+      const nextChar = line[idx];
+      if (nextChar === '(') {
+        const nextParenClose = line.indexOf(')', idx + 1);
+        const nextBracketClose = line.indexOf(']', idx + 1);
+        const looksLikeLeftOpenInterval =
+          nextBracketClose !== -1 && (nextParenClose === -1 || nextBracketClose < nextParenClose);
 
-    for (let idx = cursor; idx < markdown.length; idx += 1) {
-      const char = markdown[idx];
-      if (char === '(') {
-        depth += 1;
-      } else if (char === ')') {
+        if (!looksLikeLeftOpenInterval) {
+          depth += 1;
+        }
+      }
+      if (nextChar === ')') {
         depth -= 1;
         if (depth === 0) {
           end = idx;
@@ -48,30 +78,71 @@ function normalizeInlineParenMath(markdown: string): string {
     }
 
     if (end === -1) {
-      output += markdown[cursor];
+      output += char;
       cursor += 1;
       continue;
     }
 
-    const content = markdown.slice(cursor + 1, end);
-    const shouldConvert =
-      !content.includes('\n') &&
-      content.length > 0 &&
-      content.length <= 120 &&
-      /\\[A-Za-z]+/.test(content) &&
-      /[=^_\\]/.test(content);
-
-    output += shouldConvert ? `$${content.trim()}$` : markdown.slice(cursor, end + 1);
+    const content = line.slice(cursor + 1, end);
+    if (isLikelyInlineMath(content)) {
+      output += `$(${content.trim()})$`;
+    } else {
+      output += line.slice(cursor, end + 1);
+    }
     cursor = end + 1;
   }
 
   return output;
 }
 
+function normalizeInlineParenMath(markdown: string): string {
+  const lines = markdown.split('\n');
+  const result: string[] = [];
+  let inCodeFence = false;
+  let inDisplayMath = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('```')) {
+      inCodeFence = !inCodeFence;
+      result.push(line);
+      continue;
+    }
+
+    if (!inCodeFence && trimmed === '$$') {
+      inDisplayMath = !inDisplayMath;
+      result.push(line);
+      continue;
+    }
+
+    if (inCodeFence || inDisplayMath) {
+      result.push(line);
+      continue;
+    }
+
+    result.push(convertInlineParenMathInLine(line));
+  }
+
+  return result.join('\n');
+}
+
 function normalizeMathMarkdown(markdown: string): string {
   const normalized = markdown.replace(/\r\n/g, '\n');
 
-  const multilineNormalized = normalized.replace(
+  const escapedInlineNormalized = normalized.replace(/\\\((.+?)\\\)/g, (_full, body: string) => `$${body.trim()}$`);
+
+  const escapedMultilineNormalized = escapedInlineNormalized.replace(
+    /(^|\n)[ \t]*\\\[\s*\n([\s\S]*?)\n[ \t]*\\\](?=\n|$)/g,
+    (_full, prefix: string, body: string) => `${prefix}$$\n${body.trim()}\n$$`,
+  );
+
+  const escapedSinglelineNormalized = escapedMultilineNormalized.replace(
+    /(^|\n)[ \t]*\\\[\s*([^\n]+?)\s*\\\](?=\n|$)/g,
+    (_full, prefix: string, body: string) => `${prefix}$$\n${body.trim()}\n$$`,
+  );
+
+  const multilineNormalized = escapedSinglelineNormalized.replace(
     /(^|\n)[ \t]*\[\s*\n([\s\S]*?)\n[ \t]*\](?=\n|$)/g,
     (_full, prefix: string, body: string) => `${prefix}$$\n${body.trim()}\n$$`,
   );

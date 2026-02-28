@@ -16,7 +16,7 @@
 | 非原子流程需 Saga 闭环 | `src/engine/simulation.ts` 的 `RESERVE -> DISPATCH -> VALIDATE -> COMMIT` / `FAIL -> ABORT -> COMPENSATE` |
 | 质量判定驱动结算 | `simulation.ts` 的 `evaluateTaskOutput`（schema/score/tool-error/timeout） |
 | 宏观清算抑制长期失衡 | `src/engine/bancor.ts` 动态阈值清算（TAX/FEE） |
-| 可观测、可审计、可复验 | `src/scripts/sim-selftest.ts` + `src/scripts/sim-autodiag.ts` + `src/scripts/codex-judge.ts` |
+| 可观测、可审计、可复验 | `src/scripts/sim-selftest.ts` + `src/scripts/sim-autodiag.ts`（`codex-judge.ts` 可选） |
 
 ## 3. 当前实现基线（2026-02-28）
 
@@ -46,13 +46,13 @@
 | 2026-02-28 | `simulation.ts` | 去掉 `maxPaymentAbsolute` 与即时补给倍率 | 去掉拍脑袋常数 |
 | 2026-02-28 | `simulation.ts` | 周期补给改为“补到阈值” | 降低预算空转 |
 | 2026-02-28 | `bancor.ts` | `dynamicThreshold=max(base, avgAbsDeviation*0.45)` | 降低清算过载 |
-| 2026-02-28 | `sim-autodiag.ts` | Judge 主判单路径（`--judge-cmd` 必填） | 去兼容分支、统一判定 |
+| 2026-02-28 | `sim-autodiag.ts` | Judge 由主判改为可选解释层 | 减少“无 judge 无法跑诊断”的耦合 |
 | 2026-02-28 | `task.ts` + `simulation.ts` | 并发到达 + 突发 + 处理时延 + 输出判定器 | 从理想串行转向近现实模型 |
 | 2026-02-28 | `sim-autodiag.ts` + `sim-selftest.ts` | drain 排空（`suspendArrivals`） | 修复 `inflight_not_drained` |
 
 ## 5. 验收与观测
 
-### 5.1 Judge 观测门（当前主门）
+### 5.1 AutoDiag 观测门（硬门）
 
 - 路由集中：`top1Share`、`hhi`
 - 预算空转：`budgetSkipRatio`、`maxBudgetSkipStreak`
@@ -60,19 +60,20 @@
 - 清算负担：`clearingToCommitRatio`
 - 结构不变量：`invalid_state/no_route/inflight_not_drained/all_isolated`
 
-### 5.2 Selftest 并发门（当前）
+### 5.2 Gate 顺序（当前）
 
-1. `bun run sim:selftest --steps 100 --trials 50 --min-commit-rate 0.80 --max-failure-rate 0.20 --min-routes-per-step 1.8`
-2. `bun run sim:selftest --steps 200 --trials 50 --client-balance 1000000 --min-commit-rate 0.84 --max-failure-rate 0.16 --min-routes-per-step 2.2`
-3. `bun run sim:selftest --steps 400 --trials 20 --client-balance 2000000 --min-commit-rate 0.86 --max-failure-rate 0.15 --min-routes-per-step 2.4`
+1. `bun run sim:gate1`
+2. `bun run sim:gate2`
+3. `bun run sim:gate3`
 
-### 5.3 近期结果快照（2026-02-28）
+可选解释层：
 
-- Selftest Gate 1：`failed trials=0/50`（pass）
-- Selftest Gate 2：`failed trials=0/50`（pass）
-- Selftest Gate 3：`failed trials=0/20`（pass）
-- `status-now-200-v2.json`：`failedTrials=0/20`，Judge=`pass`
-- `status-now-400-v2.json`：`failedTrials=0/20`，Judge=`pass`
+- `bun run sim:gate3:judge`
+
+### 5.3 结果记录原则
+
+- 不在文档里写“固定 pass 快照”。
+- 以最新 `reports/gate*.json` 与命令输出为准。
 
 ## 6. 后续记录规范（每次改动都填）
 
@@ -84,5 +85,5 @@
 | 参数变化 | 旧值 -> 新值 |
 | 预期收益 | 解决什么问题 |
 | 风险 | 可能引入什么副作用 |
-| 验证命令 | 至少一条 autodiag（含 judge） |
+| 验证命令 | 至少一条 `sim:gates`，Judge 作为可选补充 |
 | 结果摘要 | 是否通过，关键指标前后对比 |
