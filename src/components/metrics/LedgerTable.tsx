@@ -124,7 +124,7 @@ export function LedgerTable({ embedded = false }: LedgerTableProps) {
                 onClick={() => toggleTick(group.tick)}
                 className="w-full px-3 py-1.5 text-left hover:bg-[var(--sys-bg-hover)] transition-colors"
               >
-                <div className="flex items-center gap-2 font-mono text-[11px] leading-tight">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-mono text-[11px] leading-tight">
                   <span className="text-[color:var(--sys-text-secondary)] w-4">{expanded ? '▾' : '▸'}</span>
                   <span className="text-[color:var(--sys-text-primary)]">T{group.tick}</span>
                   <span className="text-[color:var(--sys-text-muted)]">事件 {group.rows.length}</span>
@@ -144,7 +144,7 @@ export function LedgerTable({ embedded = false }: LedgerTableProps) {
                       key={rowKey}
                       className="px-3 py-1.5 border-t border-[var(--sys-border-muted)] text-[11px] font-mono leading-tight"
                     >
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 min-w-0">
                         <span className="text-[color:var(--sys-text-muted)] w-8 shrink-0">{formatTimelineStepLabel(entry.step)}</span>
                         <span
                           className="px-1 py-[1px] rounded text-[10px] font-semibold shrink-0"
@@ -153,7 +153,7 @@ export function LedgerTable({ embedded = false }: LedgerTableProps) {
                           {entry.action}
                         </span>
                         <span className="text-[color:var(--sys-text-secondary)] shrink-0">{entry.agentId}</span>
-                        <span className="text-[color:var(--sys-text-muted)] truncate">{entry.description}</span>
+                        <span className="text-[color:var(--sys-text-muted)] min-w-0 flex-1 truncate">{entry.description}</span>
                         <span className={`ml-auto shrink-0 text-right min-w-[46px] font-semibold ${deltaClass}`}>
                           {entry.deltaY > 0 ? '+' : ''}
                           {entry.deltaY.toFixed(1)}

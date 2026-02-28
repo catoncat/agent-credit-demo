@@ -128,7 +128,7 @@ export function SettlementPanel() {
       </div>
 
       <div className="px-2.5 py-1 overflow-x-auto border-b border-[var(--sys-border-muted)]">
-        <table className="w-full min-w-[420px] md:min-w-[560px] table-fixed text-[11px] font-mono leading-tight tabular-nums">
+        <table className="w-full min-w-[340px] sm:min-w-[420px] md:min-w-[560px] table-fixed text-[11px] font-mono leading-tight tabular-nums">
           <colgroup>
             <col className="w-[58px]" />
             <col className="w-[128px]" />

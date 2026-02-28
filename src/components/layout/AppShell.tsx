@@ -54,10 +54,10 @@ export function AppShell({ currentView, onOpenDocs, onOpenSimulation }: AppShell
               <FlowTopologyPanel />
             </div>
             <div className="lg:col-span-5 min-h-0 flex flex-col gap-3 lg:h-full">
-              <div className="shrink-0 min-h-[260px] lg:min-h-0 lg:basis-[36%]">
+              <div className="shrink-0 min-h-0 lg:min-h-0 lg:basis-[36%]">
                 <DecisionInspector />
               </div>
-              <div className="min-h-[320px] lg:min-h-0 lg:flex-1">
+              <div className="min-h-0 lg:min-h-0 lg:flex-1">
                 <SettlementPanel />
               </div>
             </div>
