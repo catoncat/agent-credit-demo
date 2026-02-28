@@ -96,6 +96,25 @@ function parseAddNodesAt(): number[] {
   return [...new Set(parsed)].sort((a, b) => a - b);
 }
 
+function parseAutoTickSummary(narrative: string): { arrivals: number; budgetSkipped: number } {
+  const extract = (key: string): number => {
+    const match = narrative.match(new RegExp(`\\b${key}=(\\d+)\\b`));
+    if (!match) return 0;
+    const parsed = Number(match[1]);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  const arrivals = extract('arrivals');
+  const budgetSkipped = extract('budgetSkipped');
+  if (budgetSkipped > 0) {
+    return { arrivals, budgetSkipped };
+  }
+  if (narrative.includes('预算不足')) {
+    return { arrivals, budgetSkipped: 1 };
+  }
+  return { arrivals, budgetSkipped: 0 };
+}
+
 function parseOptions(): CliOptions {
   return {
     steps: Math.max(1, Math.floor(parseNumberFlag('--steps', 100))),
@@ -213,6 +232,7 @@ function runTrial(trial: number, options: CliOptions): TrialResult {
   const issues: string[] = [];
   let simulatedTicks = 0;
   let budgetSkips = 0;
+  let totalArrivals = 0;
   let budgetSkipStreak = 0;
   let maxBudgetSkipStreak = 0;
 
@@ -244,8 +264,10 @@ function runTrial(trial: number, options: CliOptions): TrialResult {
     };
     simulatedTicks = step;
 
-    if (state.lastNarrative.includes('预算不足')) {
-      budgetSkips += 1;
+    const summary = parseAutoTickSummary(state.lastNarrative);
+    totalArrivals += summary.arrivals;
+    if (summary.budgetSkipped > 0) {
+      budgetSkips += summary.budgetSkipped;
       budgetSkipStreak += 1;
       maxBudgetSkipStreak = Math.max(maxBudgetSkipStreak, budgetSkipStreak);
     } else {
@@ -309,7 +331,7 @@ function runTrial(trial: number, options: CliOptions): TrialResult {
   const top1Share = routeShares.length > 0 ? Math.max(...routeShares) : 0;
   const hhi = routeShares.reduce((sum, share) => sum + share * share, 0);
   const activeRouteNodes = routeCounts.size;
-  const budgetSkipRatio = budgetSkips / Math.max(1, options.steps);
+  const budgetSkipRatio = budgetSkips / Math.max(1, totalArrivals);
   const commitRate = committed / Math.max(1, routes);
   const failureRate = failed / Math.max(1, routes);
   const routesPerStep = routes / Math.max(1, options.steps);

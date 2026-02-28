@@ -79,10 +79,22 @@ export default defineConfig([
 
 ## Simulation Commands
 
+- `bun run sim:status`
+- `bun run sim:stress-grid`
 - `bun run sim:gate1`
 - `bun run sim:gate2`
 - `bun run sim:gate3`
 - `bun run sim:gates`
+
+### 推荐流程（先跑数据再分析）
+
+`sim:status`：单场景现状诊断（不阻断，输出 JSON/Markdown 报告）。  
+`sim:stress-grid`：压力场景网格诊断（默认不依赖 Judge）。
+
+```bash
+bun run sim:status
+bun run sim:stress-grid
+```
 
 ### Gate 设计（给循环器用）
 

@@ -215,6 +215,25 @@ function parseOptionalNumberFlag(name: string): number | undefined {
   return Number.isFinite(value) ? value : undefined;
 }
 
+function parseAutoTickSummary(narrative: string): { arrivals: number; budgetSkipped: number } {
+  const extract = (key: string): number => {
+    const match = narrative.match(new RegExp(`\\b${key}=(\\d+)\\b`));
+    if (!match) return 0;
+    const parsed = Number(match[1]);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  const arrivals = extract('arrivals');
+  const budgetSkipped = extract('budgetSkipped');
+  if (budgetSkipped > 0) {
+    return { arrivals, budgetSkipped };
+  }
+  if (narrative.includes('预算不足')) {
+    return { arrivals, budgetSkipped: 1 };
+  }
+  return { arrivals, budgetSkipped: 0 };
+}
+
 function parseAddNodesAt(): number[] {
   const raw = parseStringFlag('--add-nodes-at') ?? '20,40,60';
   const parsed = raw
@@ -570,6 +589,7 @@ function runTrial(trial: number, options: CliOptions, policy: AutoTickOptions): 
   let simulatedTicks = 0;
 
   let budgetSkips = 0;
+  let totalArrivals = 0;
   let budgetSkipStreak = 0;
   let maxBudgetSkipStreak = 0;
   let maxRawRouteStreak = 0;
@@ -583,7 +603,7 @@ function runTrial(trial: number, options: CliOptions, policy: AutoTickOptions): 
   let currentRouteStreak = 0;
   let lastCompetitiveRouteAgent: AgentId | null = null;
   let currentCompetitiveRouteStreak = 0;
-  let priceComparisonTicks = 0;
+  let finiteCandidateObsTicks = 0;
   let singleFiniteQuoteTicks = 0;
 
   const recentRouteWindow: AgentId[] = [];
@@ -629,11 +649,13 @@ function runTrial(trial: number, options: CliOptions, policy: AutoTickOptions): 
   const observePriceSurface = (step: number): number => {
     if (!state.priceComparison) return 0;
 
-    priceComparisonTicks += 1;
     const finiteCandidates = Object.values(state.priceComparison)
       .filter((price) => Number.isFinite(price))
       .length;
-    if (finiteCandidates <= 1) {
+    if (finiteCandidates > 0) {
+      finiteCandidateObsTicks += 1;
+    }
+    if (finiteCandidates === 1) {
       singleFiniteQuoteTicks += 1;
       if (firstSingleFiniteQuoteStep === null) firstSingleFiniteQuoteStep = step;
     }
@@ -655,8 +677,10 @@ function runTrial(trial: number, options: CliOptions, policy: AutoTickOptions): 
     };
     simulatedTicks = step;
 
-    if (state.lastNarrative.includes('预算不足')) {
-      budgetSkips += 1;
+    const summary = parseAutoTickSummary(state.lastNarrative);
+    totalArrivals += summary.arrivals;
+    if (summary.budgetSkipped > 0) {
+      budgetSkips += summary.budgetSkipped;
       budgetSkipStreak += 1;
       maxBudgetSkipStreak = Math.max(maxBudgetSkipStreak, budgetSkipStreak);
       if (firstBudgetSkipStep === null) firstBudgetSkipStep = step;
@@ -728,8 +752,8 @@ function runTrial(trial: number, options: CliOptions, policy: AutoTickOptions): 
   const top1Share = routeShares.length > 0 ? Math.max(...routeShares) : 0;
   const hhi = routeShares.reduce((sum, share) => sum + share * share, 0);
   const activeRouteNodes = routeCounts.size;
-  const budgetSkipRatio = budgetSkips / Math.max(1, options.steps);
-  const singleFiniteQuoteRatio = singleFiniteQuoteTicks / Math.max(1, priceComparisonTicks);
+  const budgetSkipRatio = budgetSkips / Math.max(1, totalArrivals);
+  const singleFiniteQuoteRatio = singleFiniteQuoteTicks / Math.max(1, finiteCandidateObsTicks);
 
   let clearingOutflow = 0;
   for (const entry of state.ledger) {
@@ -785,12 +809,12 @@ function runTrial(trial: number, options: CliOptions, policy: AutoTickOptions): 
     });
   }
   if (
-    priceComparisonTicks >= MIN_PRICE_COMPARISON_OBS_TICKS
+    finiteCandidateObsTicks >= MIN_PRICE_COMPARISON_OBS_TICKS
     && singleFiniteQuoteRatio > SINGLE_FINITE_QUOTE_RATIO_THRESHOLD
   ) {
     issues.push({
       code: 'low_route_diversity',
-      message: `singleFiniteQuoteRatio too high: ${singleFiniteQuoteRatio.toFixed(3)} > ${SINGLE_FINITE_QUOTE_RATIO_THRESHOLD} (observedTicks=${priceComparisonTicks})`,
+      message: `singleFiniteQuoteRatio too high: ${singleFiniteQuoteRatio.toFixed(3)} > ${SINGLE_FINITE_QUOTE_RATIO_THRESHOLD} (observedTicks=${finiteCandidateObsTicks})`,
       step: firstSingleFiniteQuoteStep ?? undefined,
     });
   }

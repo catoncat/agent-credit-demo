@@ -46,7 +46,7 @@ export function comparePrices(
     // - loaded nodes pay extra to discourage hotspots
     const outcomes = agent.totalCompleted + agent.totalFailed;
     const confidence = Math.min(1, outcomes / 12);
-    const warmupMultiplier = 1 + (1 - confidence) * 1.4;
+    const warmupMultiplier = 1 + (1 - confidence) * 0.9;
 
     const utilization = agent.capacity > 0 ? agent.activeTasks / agent.capacity : 1;
     const loadMultiplier = 1 + Math.max(0, utilization) * 0.35;

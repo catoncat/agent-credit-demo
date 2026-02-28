@@ -15,7 +15,7 @@ interface CliOptions {
   trialsShort: number;
   trialsLong: number;
   longStepThreshold: number;
-  judgeCmd: string;
+  judgeCmd?: string;
   judgeTimeoutMs: number;
   whitepaperPath: string;
   outDir: string;
@@ -74,7 +74,7 @@ interface StressRow {
   maxBudgetSkipStreak: number;
   activeRouteNodes: number;
   clearingToCommitRatio: number;
-  judgeVerdict: 'pass' | 'fail' | 'error';
+  judgeVerdict: 'pass' | 'fail' | 'error' | 'not_run';
   judgeReason: string;
   runJsonPath: string;
   commandExitCode: number | null;
@@ -184,8 +184,7 @@ function parseOptions(): CliOptions {
     trialsShort: Math.max(1, Math.floor(parseNumberFlag('--trials-short', 50))),
     trialsLong: Math.max(1, Math.floor(parseNumberFlag('--trials-long', 20))),
     longStepThreshold: Math.max(1, Math.floor(parseNumberFlag('--long-step-threshold', 400))),
-    judgeCmd: parseStringFlag('--judge-cmd')
-      ?? 'bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000',
+    judgeCmd: parseStringFlag('--judge-cmd'),
     judgeTimeoutMs: Math.max(1000, Math.floor(parseNumberFlag('--judge-timeout-ms', 180000))),
     whitepaperPath: parseStringFlag('--whitepaper-path') ?? '../whitepaper.md',
     outDir,
@@ -267,16 +266,20 @@ function runAutoDiag(
     '--mode',
     'ui',
     '--allow-failures',
-    '--judge-cmd',
-    options.judgeCmd,
-    '--judge-timeout-ms',
-    String(options.judgeTimeoutMs),
-    '--whitepaper-path',
-    options.whitepaperPath,
     '--json-out',
     runJsonPath,
     ...renderFlagArgs(scenario.flags),
   ];
+  if (options.judgeCmd) {
+    args.push(
+      '--judge-cmd',
+      options.judgeCmd,
+      '--judge-timeout-ms',
+      String(options.judgeTimeoutMs),
+      '--whitepaper-path',
+      options.whitepaperPath,
+    );
+  }
 
   const run = spawnSync('bun', args, {
     encoding: 'utf8',
@@ -331,10 +334,10 @@ function runAutoDiag(
     ? (report.judge?.verdict?.verdict ?? 'fail')
     : judgeStatus === 'error'
       ? 'error'
-      : 'error';
+      : 'not_run';
   const judgeReason = judgeStatus === 'ok'
     ? (report.judge?.verdict?.reason ?? 'judge missing reason')
-    : (report.judge?.error ?? 'judge not run');
+    : (report.judge?.error ?? 'judge not enabled');
 
   const routesSafe = Math.max(1, avg.routes);
   return {
@@ -369,7 +372,7 @@ function toMarkdown(options: CliOptions, rows: StressRow[], llmSummary?: string)
   lines.push(`- steps: ${options.steps.join(', ')}`);
   lines.push(`- trialsShort: ${options.trialsShort}`);
   lines.push(`- trialsLong: ${options.trialsLong}`);
-  lines.push(`- judgeCmd: ${options.judgeCmd}`);
+  lines.push(`- judgeCmd: ${options.judgeCmd ?? '(disabled)'}`);
   lines.push(`- judgeTimeoutMs: ${options.judgeTimeoutMs}`);
   lines.push('');
   lines.push('| scenario | steps | trials | failed | anomaly | commitRate | failureRate | routes/step | top1 | hhi | skipRatio | clear/commit | judge |');

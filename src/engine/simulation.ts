@@ -161,7 +161,7 @@ function applyDiversificationGuard(
   routeNearBestRatio: number,
   nextRandom: () => number,
 ): AgentId[] {
-  if (routeNearBestRatio <= 0 || candidates.length <= 1) return candidates;
+  if (candidates.length <= 1) return candidates;
 
   const candidateSet = new Set(candidates);
   const recentRoutes = state.ledger
@@ -194,7 +194,11 @@ function applyDiversificationGuard(
 
   const relativeShare = dominantShare / expectedShare;
   const overshoot = (relativeShare - 1) / relativeShare;
-  const diversifyProb = clamp(overshoot * (1 + routeNearBestRatio), 0, 0.98);
+  if (routeNearBestRatio <= 0 && dominantShare >= 0.6 && diversified.length > 0) {
+    return diversified;
+  }
+  const diversificationWeight = Math.max(routeNearBestRatio, 0.2);
+  const diversifyProb = clamp(overshoot * (1 + diversificationWeight), 0, 0.98);
   if (nextRandom() >= diversifyProb) return candidates;
 
   return diversified;
@@ -913,6 +917,7 @@ export function executeAutoTick(
       );
   let dispatchedCount = 0;
   let budgetSkipped = 0;
+  let capacitySkipped = 0;
   let routeFailed = 0;
   let reserveFailed = 0;
   const ticksUntilClear = (() => {
@@ -940,23 +945,43 @@ export function executeAutoTick(
     let affordableCandidates: AgentId[] = [];
     const epochPacingCap = current.clientBalance / Math.max(1, ticksUntilClear);
     const paymentCap = Math.max(0, Math.min(current.clientBalance * maxPaymentRatio, epochPacingCap));
+    let bestAffordableCandidates: AgentId[] = [];
+    let bestFiniteCandidates: AgentId[] = [];
+    let bestDelta = baseDelta;
     for (const candidateDelta of adaptiveDeltas) {
       current = executeAction(
         current,
         { type: 'COMPARE_PRICES', candidates, delta: candidateDelta },
         stepNum,
       ).state;
+      const finiteCandidates = candidates.filter((id) => {
+        const price = current.priceComparison?.[id];
+        return typeof price === 'number' && Number.isFinite(price);
+      });
       const currentAffordable = candidates.filter((id) => {
         const price = current.priceComparison?.[id];
         return typeof price === 'number'
           && isAffordable(current.clientBalance, price)
           && price <= paymentCap + 1e-9;
       });
-      if (currentAffordable.length > 0) {
-        dispatchDelta = candidateDelta;
-        affordableCandidates = currentAffordable;
-        break;
+      if (finiteCandidates.length > bestFiniteCandidates.length) {
+        bestFiniteCandidates = finiteCandidates;
       }
+      if (currentAffordable.length > 0) {
+        if (currentAffordable.length > bestAffordableCandidates.length) {
+          bestDelta = candidateDelta;
+          bestAffordableCandidates = currentAffordable;
+        }
+        if (currentAffordable.length >= 2) {
+          dispatchDelta = candidateDelta;
+          affordableCandidates = currentAffordable;
+          break;
+        }
+      }
+    }
+    if (affordableCandidates.length === 0 && bestAffordableCandidates.length > 0) {
+      dispatchDelta = bestDelta;
+      affordableCandidates = bestAffordableCandidates;
     }
     affordableCandidates = applyDiversificationGuard(
       current,
@@ -966,7 +991,11 @@ export function executeAutoTick(
     );
 
     if (affordableCandidates.length === 0) {
-      budgetSkipped += 1;
+      if (bestFiniteCandidates.length > 0) {
+        budgetSkipped += 1;
+      } else {
+        capacitySkipped += 1;
+      }
       continue;
     }
 
@@ -1033,6 +1062,6 @@ export function executeAutoTick(
     waitingCount += 1;
   }
 
-  const summary = `AUTO TICK ${tickNum}: arrivals=${arrivalPlan.count}, burst=${arrivalPlan.burst}, dispatched=${dispatchedCount}, settled=${settledCount}, failed=${failedCount}, waiting=${waitingCount}, budgetSkipped=${budgetSkipped}, routeFailed=${routeFailed}, reserveFailed=${reserveFailed}`;
+  const summary = `AUTO TICK ${tickNum}: arrivals=${arrivalPlan.count}, burst=${arrivalPlan.burst}, dispatched=${dispatchedCount}, settled=${settledCount}, failed=${failedCount}, waiting=${waitingCount}, budgetSkipped=${budgetSkipped}, capacitySkipped=${capacitySkipped}, routeFailed=${routeFailed}, reserveFailed=${reserveFailed}`;
   return finalizeTick(current, summary);
 }

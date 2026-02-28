@@ -11,6 +11,8 @@
     "preview": "vite preview",
     "sim:selftest": "bun run src/scripts/sim-selftest.ts",
     "sim:autodiag": "bun run src/scripts/sim-autodiag.ts",
+    "sim:status": "bun run src/scripts/sim-autodiag.ts --steps 400 --trials 80 --mode ui --allow-failures --json-out reports/status-now.json --md-out reports/status-now.md",
+    "sim:stress-grid": "bun run src/scripts/sim-stress-grid.ts --steps-grid 400 --trials-short 40 --trials-long 40",
     "sim:gate1": "bun run src/scripts/sim-selftest.ts --steps 100 --trials 30 --max-failed-trial-ratio 0",
     "sim:gate2": "bun run src/scripts/sim-autodiag.ts --steps 200 --trials 20 --mode ui --json-out reports/gate2-autodiag.json",
     "sim:gate3": "bun run src/scripts/sim-autodiag.ts --steps 400 --trials 20 --mode ui --json-out reports/gate3-autodiag.json",
