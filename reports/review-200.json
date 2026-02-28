@@ -1,0 +1,105 @@
+{
+  "options": {
+    "steps": 200,
+    "trials": 50,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/review-200.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 50
+  },
+  "averages": {
+    "committed": 167.82,
+    "failed": 4.7,
+    "routes": 172.52,
+    "budgetSkips": 27.48,
+    "budgetSkipRatio": 0.1374,
+    "maxBudgetSkipStreak": 5.74,
+    "top1Share": 0.568399455067733,
+    "hhi": 0.5016187047645443,
+    "activeRouteNodes": 2.88,
+    "clearingOutflow": 192194.63252450989,
+    "commitGross": 1030403.6099636635,
+    "clearingToCommitRatio": 0.186551879215417,
+    "clientBalance": 1546.390036336331
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 4905
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "预算跳过相关指标显著超阈值且异常发现质量不足",
+      "confidence": 0.97,
+      "findings": [
+        "avg budgetSkipRatio=0.1374，超过阈值0.03（约4.6倍），触发硬性FAIL。",
+        "avg maxBudgetSkipStreak=5.74，超过阈值3，触发硬性FAIL。",
+        "集中度未触发失败：top1Share=0.5684<0.72，hhi=0.5016<0.60；clearingToCommitRatio=0.1866<0.30。",
+        "deterministicBlocking=false不能抵消上述硬失败条件。",
+        "anomalyTrials=0、issueCounts全0且sampleCount=0，与高预算跳过信号不一致，说明异常发现存在漏检/盲区。"
+      ],
+      "suggestedActions": [
+        "将budgetSkipRatio>=0.03或maxBudgetSkipStreak>=3设为一等异常并强制打标（budget_starvation/budget_stall）。",
+        "输出并保留逐trial样本（至少含被跳过路由、预算状态、连续跳过上下文）用于归因。",
+        "调参降低预算跳过：提高可用预算/回补速率、限制单次占用Δy、加入拥塞回退与重路由策略。",
+        "增加监控联动：预算跳过与activeRouteNodes、top1Share/hhi的联合告警，防止演化为结构性垄断。"
+      ]
+    }
+  }
+}

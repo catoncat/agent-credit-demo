@@ -1,0 +1,143 @@
+{
+  "options": {
+    "steps": 100,
+    "trials": 50,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/llm-gate1.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 50
+  },
+  "averages": {
+    "committed": 97.52,
+    "failed": 2.48,
+    "routes": 100,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.6103999999999999,
+    "hhi": 0.52002,
+    "activeRouteNodes": 2.88,
+    "clearingOutflow": 141091.7281639659,
+    "commitGross": 958587.9919614617,
+    "clearingToCommitRatio": 0.1471928745864336,
+    "clientBalance": 41412.00803853837
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 3052
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "未触发任一失败条件，且无结构性不变量破坏迹象",
+      "confidence": 0.91,
+      "findings": [
+        "avg top1Share=0.6104 (<0.72) 且 avg hhi=0.5200 (<0.60)，集中度未达失败线",
+        "avg budgetSkipRatio=0.0000 (<0.03) 且 avg maxBudgetSkipStreak=0 (<3)，无预算饥饿/停滞",
+        "avg clearingToCommitRatio=0.1472 (<0.30)，清算外流相对提交规模可接受",
+        "issueCounts 全为 0，failedTrials=0，anomalyTrials=0，未见结构性异常",
+        "avg activeRouteNodes=2.88 偏低但未伴随明确垄断证据（top1Share/hhi 均未越线）",
+        "sampleCount=0，异常发现质量证据主要依赖聚合指标，样本级可解释性不足"
+      ],
+      "suggestedActions": [
+        "继续观察 activeRouteNodes 与 top1Share/hhi 的联动，防止向单节点收敛",
+        "补充并保留样本级路由/清算明细（当前 sampleCount=0）以提升异常发现可信度",
+        "在后续回合加入压力场景（负载突增、节点降级）验证是否出现阈值外集中化"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "未触发任一失败条件，且无结构性不变量破坏迹象",
+      "confidence": 0.91,
+      "findings": [
+        "avg top1Share=0.6104 (<0.72) 且 avg hhi=0.5200 (<0.60)，集中度未达失败线",
+        "avg budgetSkipRatio=0.0000 (<0.03) 且 avg maxBudgetSkipStreak=0 (<3)，无预算饥饿/停滞",
+        "avg clearingToCommitRatio=0.1472 (<0.30)，清算外流相对提交规模可接受",
+        "issueCounts 全为 0，failedTrials=0，anomalyTrials=0，未见结构性异常",
+        "avg activeRouteNodes=2.88 偏低但未伴随明确垄断证据（top1Share/hhi 均未越线）",
+        "sampleCount=0，异常发现质量证据主要依赖聚合指标，样本级可解释性不足"
+      ],
+      "suggestedActions": [
+        "继续观察 activeRouteNodes 与 top1Share/hhi 的联动，防止向单节点收敛",
+        "补充并保留样本级路由/清算明细（当前 sampleCount=0）以提升异常发现可信度",
+        "在后续回合加入压力场景（负载突增、节点降级）验证是否出现阈值外集中化"
+      ]
+    }
+  }
+}

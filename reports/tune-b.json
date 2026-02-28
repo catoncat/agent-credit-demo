@@ -1,0 +1,84 @@
+{
+  "options": {
+    "steps": 120,
+    "trials": 20,
+    "clearEvery": 6,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "routeNearBestRatio": 0.2,
+    "routeTemperature": 0.1,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.12,
+    "budgetRefillThreshold": 6000,
+    "budgetRefillAmount": 3500,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": false,
+    "judgeAuthoritative": false,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "reports/tune-b.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 6,
+    "routeNearBestRatio": 0.2,
+    "routeTemperature": 0.1,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.12,
+    "budgetRefillThreshold": 6000,
+    "budgetRefillAmount": 3500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 117.4,
+    "failed": 2.6,
+    "routes": 120,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.6116666666666667,
+    "hhi": 0.5293124999999999,
+    "activeRouteNodes": 2.55,
+    "clearingOutflow": 262225.11671898677,
+    "commitGross": 991806.236802618,
+    "clearingToCommitRatio": 0.2643827281713162,
+    "clientBalance": 9068.763197381828
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 1468
+  },
+  "rootCauses": [
+    "清算负担偏高：clearing/commit=0.264，建议放宽逆差阈值或拉长清算周期。"
+  ],
+  "samples": []
+}

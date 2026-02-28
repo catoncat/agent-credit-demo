@@ -1,0 +1,147 @@
+{
+  "options": {
+    "steps": 120,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/autodiag-judge-tuned3.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 117.1,
+    "failed": 2.9,
+    "routes": 120,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.5679166666666667,
+    "hhi": 0.4918125000000001,
+    "activeRouteNodes": 2.95,
+    "clearingOutflow": 173327.30581714117,
+    "commitGross": 980699.490076572,
+    "clearingToCommitRatio": 0.17674458992036762,
+    "clientBalance": 19300.509923428075
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 1363
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "关键失败阈值均未触发，且未见结构性不变量破坏。",
+      "confidence": 0.92,
+      "findings": [
+        "avg top1Share=0.5679(<0.72) 且 avg hhi=0.4918(<0.60)，未达垄断失败线。",
+        "avg budgetSkipRatio=0 与 avg maxBudgetSkipStreak=0，未见预算饥饿/停滞信号。",
+        "avg clearingToCommitRatio=0.1767(<0.30)，清算占比在可接受范围。",
+        "failedTrials=0、anomalyTrials=0，且 invalid_state/inflight_not_drained/all_isolated/node_absorption 等计数均为 0。",
+        "activeRouteNodes=2.95 偏低但未与明显垄断证据共同出现（top1/hhi 未越线）。"
+      ],
+      "suggestedActions": [
+        "继续按 trial 监控 top1Share、hhi 与 activeRouteNodes 联动趋势，防止集中度上升穿越阈值。",
+        "补充对抗性负载与节点失效场景，验证在压力下 clearingToCommitRatio 与预算跳过指标不恶化。",
+        "保持白皮书约束相关审计（质量隔离、可验证日志、反女巫信号）为回归项。"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "关键失败阈值均未触发，且未见结构性不变量破坏。",
+      "confidence": 0.92,
+      "findings": [
+        "avg top1Share=0.5679(<0.72) 且 avg hhi=0.4918(<0.60)，未达垄断失败线。",
+        "avg budgetSkipRatio=0 与 avg maxBudgetSkipStreak=0，未见预算饥饿/停滞信号。",
+        "avg clearingToCommitRatio=0.1767(<0.30)，清算占比在可接受范围。",
+        "failedTrials=0、anomalyTrials=0，且 invalid_state/inflight_not_drained/all_isolated/node_absorption 等计数均为 0。",
+        "activeRouteNodes=2.95 偏低但未与明显垄断证据共同出现（top1/hhi 未越线）。"
+      ],
+      "suggestedActions": [
+        "继续按 trial 监控 top1Share、hhi 与 activeRouteNodes 联动趋势，防止集中度上升穿越阈值。",
+        "补充对抗性负载与节点失效场景，验证在压力下 clearingToCommitRatio 与预算跳过指标不恶化。",
+        "保持白皮书约束相关审计（质量隔离、可验证日志、反女巫信号）为回归项。"
+      ]
+    }
+  }
+}

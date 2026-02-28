@@ -1,0 +1,146 @@
+{
+  "options": {
+    "steps": 200,
+    "trials": 50,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 180000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "/Users/envvar/work/repos/bk/agent-credit-demo/reports/stress-grid/20260228T121151Z/baseline-200.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 1,
+    "totalTrials": 50
+  },
+  "averages": {
+    "committed": 556.26,
+    "failed": 43.52,
+    "routes": 599.78,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "maxRawRouteStreak": 16.6,
+    "maxRouteStreak": 6.24,
+    "singleFiniteQuoteRatio": 0.10330244354484706,
+    "top1Share": 0.3893211656742042,
+    "hhi": 0.3489518565556583,
+    "activeRouteNodes": 3.72,
+    "clearingOutflow": 62117.75561123009,
+    "commitGross": 1067818.4174488557,
+    "clearingToCommitRatio": 0.058182531683592165,
+    "clientBalance": 8904.886328390598
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 1,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 11558
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 50,
+      "committed": 246,
+      "failed": 66,
+      "inflight": 0,
+      "routes": 312,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 104,
+      "maxRouteStreak": 15,
+      "singleFiniteQuoteRatio": 0.23267326732673269,
+      "isolated": 0,
+      "top1Share": 0.5544871794871795,
+      "hhi": 0.3991822813938199,
+      "activeRouteNodes": 4,
+      "clearingOutflow": 78364.57931341938,
+      "commitGross": 1033891.2252403881,
+      "clearingToCommitRatio": 0.07579576787219466,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 43,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 15 >= 12",
+          "step": 108
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 180000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "核心指标均在失败阈值内且无结构性不变量破坏",
+      "confidence": 0.91,
+      "findings": [
+        "平均 top1Share=0.389<0.72，平均 hhi=0.349<0.60，未见明确垄断。",
+        "平均 budgetSkipRatio=0<0.03，平均 maxBudgetSkipStreak=0<3，无预算饥饿迹象。",
+        "平均 maxRouteStreak=6.24<10；存在 1/50 异常样本（trial 50: maxRouteStreak=15，node_absorption）。",
+        "平均 singleFiniteQuoteRatio=0.103<0.55，价格面未长期退化为单候选。",
+        "平均 clearingToCommitRatio=0.058<0.30，清算相对提交占比可控。",
+        "failedTrials=0，且 no_route/inflight_not_drained/all_isolated/invalid_state 均为 0。",
+        "deterministicBlocking=true 作为信号成立，但结合主指标不足以触发失败判定。"
+      ],
+      "suggestedActions": [
+        "对 maxRouteStreak 增加分位数与尾部告警（P95/P99），避免均值掩盖吸收事件。",
+        "针对 trial 50 的 firstDominantStep=43 做回放排查，定位 node_absorption 根因。",
+        "扩大样本并按时间窗跟踪 activeRouteNodes 与 top1Share 联动，防止隐性集中化。"
+      ]
+    }
+  }
+}

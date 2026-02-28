@@ -1,0 +1,145 @@
+{
+  "options": {
+    "steps": 120,
+    "trials": 20,
+    "clearEvery": 5,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/autodiag-judge-authoritative.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 5,
+    "routeNearBestRatio": 0.12,
+    "routeTemperature": 0.08,
+    "adaptiveDeltaFloor": 16,
+    "maxPaymentRatio": 0.25,
+    "budgetRefillThreshold": 2500,
+    "budgetRefillAmount": 1800
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 106.65,
+    "failed": 2.55,
+    "routes": 109.2,
+    "budgetSkips": 10.8,
+    "budgetSkipRatio": 0.09,
+    "maxBudgetSkipStreak": 3.9,
+    "top1Share": 0.6653034100626036,
+    "hhi": 0.5639140832794791,
+    "activeRouteNodes": 2.35,
+    "clearingOutflow": 307922.8974271224,
+    "commitGross": 1005650.2602372147,
+    "clearingToCommitRatio": 0.30618363271894383,
+    "clientBalance": 919.7397627850845
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 1450
+  },
+  "rootCauses": [
+    "清算负担偏高：clearing/commit=0.306，建议放宽逆差阈值或拉长清算周期。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "路由集中、预算跳过与清算负担并存且告警漏检",
+      "confidence": 0.93,
+      "findings": [
+        "top1Share=0.665、hhi=0.564、activeRouteNodes=2.35，呈现持续性流量集中，符合单节点吸收风险特征。",
+        "budgetSkipRatio=0.09 且 maxBudgetSkipStreak=3.9，预算跳过/停滞信号已属非轻微且具持续性。",
+        "clearingToCommitRatio=0.306，且 rootCauses 已指向清算负担偏高，清算压力相对提交流结构性不健康。",
+        "issueCounts 中 node_absorption、budget_starvation、low_route_diversity 全为 0，与核心指标矛盾，异常发现质量不足。",
+        "sampleCount=0，缺乏样本级证据用于定位与复核异常路径。"
+      ],
+      "suggestedActions": [
+        "将 top1Share、hhi、activeRouteNodes 设为硬触发告警并联动重路由/降权。",
+        "调参降低预算跳过（配额、回补速率、预留释放），将 budgetSkipRatio 压至低位并限制 skip streak。",
+        "按 rootCauses 建议优化清算参数（逆差阈值、清算周期）并持续跟踪 clearingToCommitRatio。",
+        "修复异常检测规则：当集中度或预算跳过超阈时必须上报对应 issue（node_absorption/budget_starvation/low_route_diversity）。",
+        "补充样本采集与回放链路，确保每轮可做证据化归因。"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "路由集中、预算跳过与清算负担并存且告警漏检",
+      "confidence": 0.93,
+      "findings": [
+        "top1Share=0.665、hhi=0.564、activeRouteNodes=2.35，呈现持续性流量集中，符合单节点吸收风险特征。",
+        "budgetSkipRatio=0.09 且 maxBudgetSkipStreak=3.9，预算跳过/停滞信号已属非轻微且具持续性。",
+        "clearingToCommitRatio=0.306，且 rootCauses 已指向清算负担偏高，清算压力相对提交流结构性不健康。",
+        "issueCounts 中 node_absorption、budget_starvation、low_route_diversity 全为 0，与核心指标矛盾，异常发现质量不足。",
+        "sampleCount=0，缺乏样本级证据用于定位与复核异常路径。"
+      ],
+      "suggestedActions": [
+        "将 top1Share、hhi、activeRouteNodes 设为硬触发告警并联动重路由/降权。",
+        "调参降低预算跳过（配额、回补速率、预留释放），将 budgetSkipRatio 压至低位并限制 skip streak。",
+        "按 rootCauses 建议优化清算参数（逆差阈值、清算周期）并持续跟踪 clearingToCommitRatio。",
+        "修复异常检测规则：当集中度或预算跳过超阈时必须上报对应 issue（node_absorption/budget_starvation/low_route_diversity）。",
+        "补充样本采集与回放链路，确保每轮可做证据化归因。"
+      ]
+    }
+  }
+}

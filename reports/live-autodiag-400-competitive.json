@@ -1,0 +1,145 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/live-autodiag-400-competitive.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 1,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 1087.15,
+    "failed": 88.95,
+    "routes": 1176.1,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "maxRawRouteStreak": 28.95,
+    "maxRouteStreak": 6.55,
+    "singleFiniteQuoteRatio": 0.08276604107255288,
+    "top1Share": 0.3839483315855675,
+    "hhi": 0.3463902265218258,
+    "activeRouteNodes": 4.6,
+    "clearingOutflow": 134274.50226184662,
+    "commitGross": 1153464.087883232,
+    "clearingToCommitRatio": 0.11631812525255385,
+    "clientBalance": 8856.65405855678
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 1,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 8666
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 1,
+      "committed": 426,
+      "failed": 94,
+      "inflight": 0,
+      "routes": 520,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 438,
+      "maxRouteStreak": 12,
+      "singleFiniteQuoteRatio": 0.3175,
+      "isolated": 0,
+      "top1Share": 0.9115384615384615,
+      "hhi": 0.8348446745562129,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 124051.410443319,
+      "commitGross": 1056695.4524464402,
+      "clearingToCommitRatio": 0.11739561304642472,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 32,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 12 >= 12",
+          "step": 209
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "均值未触发任何FAIL阈值，且未见结构性不变量破坏；仅1次节点吸附异常。",
+      "confidence": 0.9,
+      "findings": [
+        "avg top1Share=0.383948、avg hhi=0.346390，均低于垄断FAIL阈值(0.72/0.60)。",
+        "avg budgetSkipRatio=0、avg maxBudgetSkipStreak=0，未见预算饥饿或预算停滞。",
+        "avg maxRouteStreak=6.55(<10)，但样本中有1次maxRouteStreak=12并触发node_absorption。",
+        "avg singleFiniteQuoteRatio=0.082766(<0.55)，未出现长期单候选价格面。",
+        "avg clearingToCommitRatio=0.116318(<0.30)；failedTrials=0，且invalid_state/inflight_not_drained/all_isolated均为0。",
+        "deterministicBlocking=true是风险信号，但结合totalTrials=20且anomalyTrials=1，证据指向偶发而非持续结构性垄断。"
+      ],
+      "suggestedActions": [
+        "扩大观测窗口并按epoch跟踪node_absorption复现率与top1Share/hhi分位数。",
+        "对连续命中节点增加更早的背压/费率提升或熔断，降低再次出现maxRouteStreak=12的概率。",
+        "增加activeRouteNodes与高top1Share联动告警（如top1Share>0.8持续区间），防止偶发吸附演化为持久垄断。"
+      ]
+    }
+  }
+}

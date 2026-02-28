@@ -1,0 +1,143 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/llm-gate3.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 228.85,
+    "failed": 7.15,
+    "routes": 236,
+    "budgetSkips": 164,
+    "budgetSkipRatio": 0.41,
+    "maxBudgetSkipStreak": 7,
+    "top1Share": 0.5386940394689389,
+    "hhi": 0.4848477571209232,
+    "activeRouteNodes": 2.95,
+    "clearingOutflow": 692720.3596567033,
+    "commitGross": 1145362.3483149032,
+    "clearingToCommitRatio": 0.6049048790378729,
+    "clientBalance": 212.651685096929
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 2541
+  },
+  "rootCauses": [
+    "清算负担偏高：clearing/commit=0.605，建议放宽逆差阈值或拉长清算周期。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "多项核心指标越过失败阈值，路由与清算异常明显",
+      "confidence": 0.99,
+      "findings": [
+        "budgetSkipRatio=0.41 >= 0.03，远超失败线，说明预算跳过普遍存在",
+        "maxBudgetSkipStreak=7 >= 3，出现持续预算阻塞序列",
+        "clearingToCommitRatio=0.6049 >= 0.30，清算负担过高，吞噬提交价值",
+        "top1Share=0.5387、hhi=0.4848 未触发垄断阈值，但 activeRouteNodes=2.95 偏低",
+        "failedTrials=0、anomalyTrials=0 与上述超阈值不一致，异常发现能力存在漏检风险"
+      ],
+      "suggestedActions": [
+        "先修预算门控：下调/重构 skip 触发条件，目标 budgetSkipRatio < 0.03、maxBudgetSkipStreak < 3",
+        "按 rootCauses 建议放宽逆差阈值或拉长清算周期，将 clearingToCommitRatio 降到 < 0.30",
+        "增加基于比率阈值的硬告警与 trial 级样本输出，避免 anomalyTrials 持续为 0",
+        "在不牺牲质量约束前提下提升有效活跃路由节点数，持续监控 top1Share/hhi 防止向垄断漂移"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "多项核心指标越过失败阈值，路由与清算异常明显",
+      "confidence": 0.99,
+      "findings": [
+        "budgetSkipRatio=0.41 >= 0.03，远超失败线，说明预算跳过普遍存在",
+        "maxBudgetSkipStreak=7 >= 3，出现持续预算阻塞序列",
+        "clearingToCommitRatio=0.6049 >= 0.30，清算负担过高，吞噬提交价值",
+        "top1Share=0.5387、hhi=0.4848 未触发垄断阈值，但 activeRouteNodes=2.95 偏低",
+        "failedTrials=0、anomalyTrials=0 与上述超阈值不一致，异常发现能力存在漏检风险"
+      ],
+      "suggestedActions": [
+        "先修预算门控：下调/重构 skip 触发条件，目标 budgetSkipRatio < 0.03、maxBudgetSkipStreak < 3",
+        "按 rootCauses 建议放宽逆差阈值或拉长清算周期，将 clearingToCommitRatio 降到 < 0.30",
+        "增加基于比率阈值的硬告警与 trial 级样本输出，避免 anomalyTrials 持续为 0",
+        "在不牺牲质量约束前提下提升有效活跃路由节点数，持续监控 top1Share/hhi 防止向垄断漂移"
+      ]
+    }
+  }
+}

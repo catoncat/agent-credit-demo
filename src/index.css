@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@layer base {
+  :root {
+    --ref-neutral-0: #ffffff;
+    --ref-neutral-50: #f8f9fb;
+    --ref-neutral-100: #eef1f4;
+    --ref-neutral-200: #e5e9ef;
+    --ref-neutral-300: #d7dde5;
+    --ref-neutral-500: #6b7280;
+    --ref-neutral-700: #4b5563;
+    --ref-neutral-900: #1f2933;
+
+    --ref-function-idle: #355070;
+    --ref-function-success: #2e7d32;
+    --ref-function-danger: #b42318;
+    --ref-function-warning: #9a6700;
+    --ref-function-overflow: #b54708;
+    --ref-function-action: #0f766e;
+    --ref-function-action-hover: #0b5f59;
+
+    --sys-bg-canvas: var(--ref-neutral-100);
+    --sys-bg-panel: var(--ref-neutral-0);
+    --sys-bg-card: var(--ref-neutral-50);
+    --sys-bg-hover: #edf2f7;
+    --sys-bg-soft: #f3f5f8;
+
+    --sys-text-primary: var(--ref-neutral-900);
+    --sys-text-secondary: var(--ref-neutral-700);
+    --sys-text-muted: var(--ref-neutral-500);
+    --sys-text-inverse: #f3f4f6;
+
+    --sys-border-default: var(--ref-neutral-300);
+    --sys-border-muted: var(--ref-neutral-200);
+    --sys-border-strong: #b9c3cf;
+
+    --sys-action-primary: var(--ref-function-action);
+    --sys-action-primary-hover: var(--ref-function-action-hover);
+
+    --sys-status-idle: var(--ref-function-idle);
+    --sys-status-success: var(--ref-function-success);
+    --sys-status-fail: var(--ref-function-danger);
+    --sys-status-executing: var(--ref-function-warning);
+    --sys-status-overflow: var(--ref-function-overflow);
+    --sys-status-neutral: #64748b;
+
+    --sys-status-idle-soft: #e8eef5;
+    --sys-status-success-soft: #eaf7ef;
+    --sys-status-fail-soft: #fdeceb;
+    --sys-status-executing-soft: #fff6e5;
+    --sys-status-overflow-soft: #fff1e7;
+
+    --sys-chart-line: var(--ref-function-idle);
+    --sys-chart-area: rgba(53, 80, 112, 0.08);
+    --sys-chart-dot: var(--ref-function-action);
+    --sys-chart-grid: #dbe3ec;
+
+    --cmp-radius-panel: 12px;
+    --cmp-radius-control: 8px;
+
+    font-family: 'IBM Plex Sans', 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+    font-size: clamp(15px, 0.25vw + 14px, 17px);
+    line-height: 1.5;
+    font-weight: 400;
+    color: var(--sys-text-primary);
+    background-color: var(--sys-bg-canvas);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--sys-bg-canvas);
+    color: var(--sys-text-primary);
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100dvh;
+    height: auto;
+  }
+
+  @media (min-width: 64rem) {
+    body {
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    #root {
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sys-border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sys-text-muted);
+}
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -20; }
+}
+
+.animate-dash {
+  animation: dash-flow 2s linear infinite;
+}

@@ -1,0 +1,206 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "processingDelayMin": 1,
+    "processingDelayMax": 7,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 180000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "/Users/envvar/work/repos/bk/agent-credit-demo/reports/stress-grid/20260228T121151Z/delay_heavy-400.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 7
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 3,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 914,
+    "failed": 87.3,
+    "routes": 1001.3,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "maxRawRouteStreak": 60.3,
+    "maxRouteStreak": 8.75,
+    "singleFiniteQuoteRatio": 0.2123576201353031,
+    "top1Share": 0.41802040713767186,
+    "hhi": 0.3289832089541339,
+    "activeRouteNodes": 5.7,
+    "clearingOutflow": 175451.95980283647,
+    "commitGross": 1154395.2149612159,
+    "clearingToCommitRatio": 0.15194039802950896,
+    "clientBalance": 7942.158713689079
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 3,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 7504
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 5,
+      "committed": 466,
+      "failed": 64,
+      "inflight": 0,
+      "routes": 530,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 432,
+      "maxRouteStreak": 27,
+      "singleFiniteQuoteRatio": 0.25552825552825553,
+      "isolated": 0,
+      "top1Share": 0.9188679245283019,
+      "hhi": 0.847191171235315,
+      "activeRouteNodes": 5,
+      "clearingOutflow": 195616.4011991124,
+      "commitGross": 1057429.5616159826,
+      "clearingToCommitRatio": 0.18499237046122294,
+      "clientBalance": 8549.818938922954,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 46,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 27 >= 12",
+          "step": 66
+        }
+      ]
+    },
+    {
+      "trial": 16,
+      "committed": 444,
+      "failed": 78,
+      "inflight": 0,
+      "routes": 522,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 455,
+      "maxRouteStreak": 28,
+      "singleFiniteQuoteRatio": 0.19801980198019803,
+      "isolated": 1,
+      "top1Share": 0.9176245210727969,
+      "hhi": 0.8451211814271662,
+      "activeRouteNodes": 4,
+      "clearingOutflow": 171543.56876013608,
+      "commitGross": 1059039.3408812,
+      "clearingToCommitRatio": 0.16198035534487226,
+      "clientBalance": 8397.162025896028,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 44,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 28 >= 12",
+          "step": 94
+        }
+      ]
+    },
+    {
+      "trial": 20,
+      "committed": 279,
+      "failed": 68,
+      "inflight": 0,
+      "routes": 347,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 212,
+      "maxRouteStreak": 34,
+      "singleFiniteQuoteRatio": 0.07160493827160494,
+      "isolated": 0,
+      "top1Share": 0.7175792507204611,
+      "hhi": 0.5421272496241976,
+      "activeRouteNodes": 4,
+      "clearingOutflow": 117309.92354863626,
+      "commitGross": 1069001.3321652692,
+      "clearingToCommitRatio": 0.10973786469566342,
+      "clientBalance": 8481.73424730077,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 108,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 34 >= 12",
+          "step": 114
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 180000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "均值指标未触发FAIL阈值且未见结构不变式破坏，但有间歇性节点吸附异常。",
+      "confidence": 0.82,
+      "findings": [
+        "avg top1Share=0.418、avg hhi=0.329，均低于FAIL线(0.72/0.60)。",
+        "avg budgetSkipRatio=0、avg maxBudgetSkipStreak=0，未见预算饥饿或预算停滞。",
+        "avg maxRouteStreak=8.75、avg singleFiniteQuoteRatio=0.212、avg clearingToCommitRatio=0.152，均低于FAIL线(10/0.55/0.30)。",
+        "20次中有3次node_absorption异常；样本trial 5/16/20的maxRouteStreak=27/28/34，且top1Share最高到0.919，存在明确但非持续的局部垄断片段。",
+        "deterministicBlocking=true是风险信号，但no_route/inflight_not_drained/invalid_state均为0，当前证据更偏向可控异常而非结构性失效。"
+      ],
+      "suggestedActions": [
+        "在路由选择中加入连续命中抑制（基于streak的动态加价或冷却）以压低node_absorption峰值。",
+        "将评估口径从均值扩展到P95/P99（top1Share、hhi、maxRouteStreak），避免均值掩盖尾部垄断风险。",
+        "针对firstDominantStep附近窗口做回放审计并校准背压/QoS摩擦参数，目标将异常试验占比从3/20进一步下降。"
+      ]
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "options": {
+    "steps": 120,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/autodiag-judge-tuned2.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 117.1,
+    "failed": 2.9,
+    "routes": 120,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.5679166666666667,
+    "hhi": 0.4918125000000001,
+    "activeRouteNodes": 2.95,
+    "clearingOutflow": 173327.30581714117,
+    "commitGross": 980699.490076572,
+    "clearingToCommitRatio": 0.17674458992036762,
+    "clientBalance": 19300.509923428075
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 1363
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "存在持续单节点吸流迹象且异常发现不足",
+      "confidence": 0.87,
+      "findings": [
+        "top1Share 平均 0.5679，单节点长期承接过半流量，集中度偏高。",
+        "HHI 平均 0.4918，路由分布呈高集中形态。",
+        "activeRouteNodes 平均 2.95，活跃路由节点数偏低，与高 top1Share/HHI 一致指向吸流结构。",
+        "anomalyTrials=0 且 node_absorption=0、low_route_diversity=0，说明当前异常发现对结构性集中风险不敏感。",
+        "budgetSkipRatio=0、maxBudgetSkipStreak=0，未见预算饥饿或 skip-loop 持续问题；deterministicBlocking=false 仅为辅助信号。"
+      ],
+      "suggestedActions": [
+        "新增“持续性集中”检测：按时间窗跟踪 top1Share/HHI 连续超阈值即判异常。",
+        "在路由策略中加入集中度惩罚与 activeRouteNodes 下限约束，强制流量分散。",
+        "调陡背压与 QoS 摩擦参数（容量紧张与质量风险时更快涨价），抑制头部节点持续吸流。",
+        "报告中补充分布与时间序列证据（分位数/窗口曲线），避免均值掩盖结构性异常。"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "存在持续单节点吸流迹象且异常发现不足",
+      "confidence": 0.87,
+      "findings": [
+        "top1Share 平均 0.5679，单节点长期承接过半流量，集中度偏高。",
+        "HHI 平均 0.4918，路由分布呈高集中形态。",
+        "activeRouteNodes 平均 2.95，活跃路由节点数偏低，与高 top1Share/HHI 一致指向吸流结构。",
+        "anomalyTrials=0 且 node_absorption=0、low_route_diversity=0，说明当前异常发现对结构性集中风险不敏感。",
+        "budgetSkipRatio=0、maxBudgetSkipStreak=0，未见预算饥饿或 skip-loop 持续问题；deterministicBlocking=false 仅为辅助信号。"
+      ],
+      "suggestedActions": [
+        "新增“持续性集中”检测：按时间窗跟踪 top1Share/HHI 连续超阈值即判异常。",
+        "在路由策略中加入集中度惩罚与 activeRouteNodes 下限约束，强制流量分散。",
+        "调陡背压与 QoS 摩擦参数（容量紧张与质量风险时更快涨价），抑制头部节点持续吸流。",
+        "报告中补充分布与时间序列证据（分位数/窗口曲线），避免均值掩盖结构性异常。"
+      ]
+    }
+  }
+}

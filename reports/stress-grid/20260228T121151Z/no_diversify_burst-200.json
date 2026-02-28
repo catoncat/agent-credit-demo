@@ -1,0 +1,480 @@
+{
+  "options": {
+    "steps": 200,
+    "trials": 50,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "routeNearBestRatio": 0,
+    "routeTemperature": 0.08,
+    "arrivalBaseMin": 3,
+    "arrivalBaseMax": 5,
+    "arrivalBurstProb": 0.55,
+    "arrivalBurstMin": 4,
+    "arrivalBurstMax": 9,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 180000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "/Users/envvar/work/repos/bk/agent-credit-demo/reports/stress-grid/20260228T121151Z/no_diversify_burst-200.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0,
+    "routeTemperature": 0.08,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 3,
+    "arrivalBaseMax": 5,
+    "arrivalBurstProb": 0.55,
+    "arrivalBurstMin": 4,
+    "arrivalBurstMax": 9,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 37,
+    "totalTrials": 50
+  },
+  "averages": {
+    "committed": 517.48,
+    "failed": 95.1,
+    "routes": 612.58,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "maxRawRouteStreak": 32.46,
+    "maxRouteStreak": 21.82,
+    "singleFiniteQuoteRatio": 0.14406102475049834,
+    "top1Share": 0.45728069685407463,
+    "hhi": 0.3412910758041564,
+    "activeRouteNodes": 5.16,
+    "clearingOutflow": 72008.01363735423,
+    "commitGross": 1105338.7874655353,
+    "clearingToCommitRatio": 0.06490230538269731,
+    "clientBalance": 8299.009999735066
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 37,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 13197
+  },
+  "rootCauses": [
+    "节点吸附：top1Share 均值=0.457，建议提高 routeNearBestRatio 或启用反锁死探索。"
+  ],
+  "samples": [
+    {
+      "trial": 1,
+      "committed": 379,
+      "failed": 104,
+      "inflight": 0,
+      "routes": 483,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 22,
+      "maxRouteStreak": 22,
+      "singleFiniteQuoteRatio": 0.10837438423645321,
+      "isolated": 0,
+      "top1Share": 0.33954451345755693,
+      "hhi": 0.23331147203682984,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 74073.51275223149,
+      "commitGross": 1104127.7060237331,
+      "clearingToCommitRatio": 0.06708781271234515,
+      "clientBalance": 8842.783245682032,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 22 >= 12",
+          "step": 91
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "committed": 63,
+      "failed": 66,
+      "inflight": 0,
+      "routes": 129,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 13,
+      "maxRouteStreak": 13,
+      "singleFiniteQuoteRatio": 0.025,
+      "isolated": 0,
+      "top1Share": 0.3333333333333333,
+      "hhi": 0.25953969112433145,
+      "activeRouteNodes": 4,
+      "clearingOutflow": 55703.79436230181,
+      "commitGross": 1017281.4789797538,
+      "clearingToCommitRatio": 0.05475750371290348,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 13 >= 12",
+          "step": 99
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "committed": 497,
+      "failed": 151,
+      "inflight": 0,
+      "routes": 648,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 21,
+      "maxRouteStreak": 12,
+      "singleFiniteQuoteRatio": 0.11330049261083744,
+      "isolated": 0,
+      "top1Share": 0.4212962962962963,
+      "hhi": 0.2872275567748818,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 78069.29775196034,
+      "commitGross": 1142844.9868223877,
+      "clearingToCommitRatio": 0.06831136212884599,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 12 >= 12",
+          "step": 44
+        }
+      ]
+    },
+    {
+      "trial": 6,
+      "committed": 803,
+      "failed": 106,
+      "inflight": 0,
+      "routes": 909,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 12,
+      "maxRouteStreak": 12,
+      "singleFiniteQuoteRatio": 0.21674876847290642,
+      "isolated": 0,
+      "top1Share": 0.40154015401540155,
+      "hhi": 0.29877366174461234,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 74929.82132271858,
+      "commitGross": 1156882.4625841498,
+      "clearingToCommitRatio": 0.06476874163633395,
+      "clientBalance": 8510.707409099681,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 12 >= 12",
+          "step": 76
+        }
+      ]
+    },
+    {
+      "trial": 10,
+      "committed": 711,
+      "failed": 129,
+      "inflight": 0,
+      "routes": 840,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 18,
+      "maxRouteStreak": 18,
+      "singleFiniteQuoteRatio": 0.15763546798029557,
+      "isolated": 0,
+      "top1Share": 0.44166666666666665,
+      "hhi": 0.3059835600907029,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 84034.54878522799,
+      "commitGross": 1148006.7288751295,
+      "clearingToCommitRatio": 0.0732003974119289,
+      "clientBalance": 8714.57716000928,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 18 >= 12",
+          "step": 19
+        }
+      ]
+    },
+    {
+      "trial": 11,
+      "committed": 964,
+      "failed": 67,
+      "inflight": 0,
+      "routes": 1031,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 13,
+      "maxRouteStreak": 13,
+      "singleFiniteQuoteRatio": 0.32019704433497537,
+      "isolated": 1,
+      "top1Share": 0.4180407371483996,
+      "hhi": 0.33571034120725024,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 110599.39415583368,
+      "commitGross": 1147093.4082836949,
+      "clearingToCommitRatio": 0.09641707759555065,
+      "clientBalance": 8606.087568319901,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 13 >= 12",
+          "step": 83
+        }
+      ]
+    },
+    {
+      "trial": 12,
+      "committed": 678,
+      "failed": 126,
+      "inflight": 0,
+      "routes": 804,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 17,
+      "maxRouteStreak": 13,
+      "singleFiniteQuoteRatio": 0.15763546798029557,
+      "isolated": 0,
+      "top1Share": 0.39054726368159204,
+      "hhi": 0.24087893864013266,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 81714.40000061537,
+      "commitGross": 1154445.641796415,
+      "clearingToCommitRatio": 0.07078237124570097,
+      "clientBalance": 8547.45453965121,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 13 >= 12",
+          "step": 19
+        }
+      ]
+    },
+    {
+      "trial": 13,
+      "committed": 787,
+      "failed": 78,
+      "inflight": 0,
+      "routes": 865,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 29,
+      "maxRouteStreak": 29,
+      "singleFiniteQuoteRatio": 0.2413793103448276,
+      "isolated": 0,
+      "top1Share": 0.48092485549132946,
+      "hhi": 0.4323392027799124,
+      "activeRouteNodes": 5,
+      "clearingOutflow": 58735.30034569071,
+      "commitGross": 1130103.5408520072,
+      "clearingToCommitRatio": 0.05197337962626771,
+      "clientBalance": 8672.845599344497,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 25,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 29 >= 12",
+          "step": 22
+        }
+      ]
+    },
+    {
+      "trial": 14,
+      "committed": 578,
+      "failed": 116,
+      "inflight": 0,
+      "routes": 694,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 19,
+      "maxRouteStreak": 19,
+      "singleFiniteQuoteRatio": 0.1477832512315271,
+      "isolated": 0,
+      "top1Share": 0.45677233429394815,
+      "hhi": 0.2964977701002417,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 75004.21323645601,
+      "commitGross": 1135274.9791046774,
+      "clearingToCommitRatio": 0.06606700104991946,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 19 >= 12",
+          "step": 33
+        }
+      ]
+    },
+    {
+      "trial": 15,
+      "committed": 421,
+      "failed": 80,
+      "inflight": 0,
+      "routes": 501,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 14,
+      "maxRouteStreak": 13,
+      "singleFiniteQuoteRatio": 0.12315270935960591,
+      "isolated": 0,
+      "top1Share": 0.35528942115768464,
+      "hhi": 0.26487942279114424,
+      "activeRouteNodes": 5,
+      "clearingOutflow": 89685.81614520063,
+      "commitGross": 1099572.4932509686,
+      "clearingToCommitRatio": 0.08156425946963967,
+      "clientBalance": 8753.320199346846,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 13 >= 12",
+          "step": 91
+        }
+      ]
+    },
+    {
+      "trial": 16,
+      "committed": 592,
+      "failed": 125,
+      "inflight": 0,
+      "routes": 717,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 21,
+      "maxRouteStreak": 16,
+      "singleFiniteQuoteRatio": 0.21182266009852216,
+      "isolated": 0,
+      "top1Share": 0.48535564853556484,
+      "hhi": 0.30444339404266574,
+      "activeRouteNodes": 6,
+      "clearingOutflow": 78974.15572455373,
+      "commitGross": 1144896.9579537297,
+      "clearingToCommitRatio": 0.06897926942325357,
+      "clientBalance": 8803.643049593427,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 16 >= 12",
+          "step": 13
+        }
+      ]
+    },
+    {
+      "trial": 17,
+      "committed": 79,
+      "failed": 68,
+      "inflight": 0,
+      "routes": 147,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "maxRawRouteStreak": 24,
+      "maxRouteStreak": 24,
+      "singleFiniteQuoteRatio": 0.035,
+      "isolated": 0,
+      "top1Share": 0.7006802721088435,
+      "hhi": 0.5361192095885974,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 47638.43493626165,
+      "commitGross": 1024169.2272678134,
+      "clearingToCommitRatio": 0.046514222130406305,
+      "clientBalance": 9000,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 43,
+      "issues": [
+        {
+          "code": "node_absorption",
+          "message": "maxRouteStreak too high: 24 >= 12",
+          "step": 18
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 180000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "avg maxRouteStreak=21.82>=10，已触发硬性失败条件。",
+      "confidence": 0.98,
+      "findings": [
+        "触发硬性失败条件：avg maxRouteStreak 为 21.82（阈值 10）。",
+        "异常占比高：anomalyTrials=37/50，且 node_absorption=37，与样本里多次 maxRouteStreak>=12 一致。",
+        "top1Share=0.457 与 hhi=0.341 虽未触发静态垄断阈值，但存在明显时序路由锁定（长连续命中）。",
+        "其余关键面向未触发失败：budgetSkipRatio=0、maxBudgetSkipStreak=0、singleFiniteQuoteRatio=0.144、clearingToCommitRatio=0.0649。"
+      ],
+      "suggestedActions": [
+        "提高探索与近优随机化（如上调 routeNearBestRatio / 注入 epsilon-greedy）以打断长 streak。",
+        "加入 streak-aware 抑制：对连续命中同节点施加临时惩罚或冷却，目标将 avg maxRouteStreak 压到 <10。",
+        "在回归评估中增加时序多样性约束与告警（窗口切换率、最长连续路由），并复跑 50+ trials 验证 anomalyTrials 下降。"
+      ]
+    }
+  }
+}

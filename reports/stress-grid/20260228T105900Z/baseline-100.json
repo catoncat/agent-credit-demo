@@ -1,0 +1,111 @@
+{
+  "options": {
+    "steps": 100,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 180000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "/Users/envvar/work/repos/bk/agent-credit-demo/reports/stress-grid/20260228T105900Z/baseline-100.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000,
+    "arrivalBaseMin": 2,
+    "arrivalBaseMax": 3,
+    "arrivalBurstProb": 0.18,
+    "arrivalBurstMin": 2,
+    "arrivalBurstMax": 4,
+    "processingDelayMin": 1,
+    "processingDelayMax": 3
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 283.6,
+    "failed": 18.7,
+    "routes": 302.3,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.420748879828586,
+    "hhi": 0.366670117640344,
+    "activeRouteNodes": 3.1,
+    "clearingOutflow": 27097.049063050898,
+    "commitGross": 1022146.5913877699,
+    "clearingToCommitRatio": 0.02651144762717747,
+    "clientBalance": 7028.969293349073
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 2544
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 180000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "关键风险指标均未触发失败条件，且未见结构性不变量破坏。",
+      "confidence": 0.9,
+      "findings": [
+        "top1Share=0.4207488798、hhi=0.3666701176，低于失败阈值（0.72/0.60），无明显垄断证据。",
+        "budgetSkipRatio=0、maxBudgetSkipStreak=0，低于失败阈值（0.03/3），未见预算饥饿或预算停滞。",
+        "clearingToCommitRatio=0.0265114476，低于失败阈值0.30，清算/提交比健康。",
+        "failedTrials=0、anomalyTrials=0，且issueCounts各项为0（含invalid_state/inflight_not_drained等），未见结构性异常。",
+        "activeRouteNodes=3.1，结合top1Share与hhi未显示“低活跃+垄断”联合失效模式。",
+        "sampleCount=0，样本级异常证据覆盖有限，降低结论把握度但不构成当前失败条件。"
+      ],
+      "suggestedActions": [
+        "增加样本级输出（sampleHead/异常切片）以提升异常发现质量与可解释性。",
+        "持续监控top1Share、hhi与activeRouteNodes的联动趋势，设置回归告警。",
+        "补充对抗性场景（如Sybil/刷量、拥塞突发）回归，用于验证白皮书中的隔离与审计意图。"
+      ]
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "options": {
+    "steps": 400,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/llm-gate3-v2.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "maxPaymentAbsolute": 2200,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 1,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 387.75,
+    "failed": 12.25,
+    "routes": 400,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.5195000000000001,
+    "hhi": 0.47523125000000005,
+    "activeRouteNodes": 2.95,
+    "clearingOutflow": 82153.18131589786,
+    "commitGross": 333746.4827998102,
+    "clearingToCommitRatio": 0.24618170916695173,
+    "clientBalance": 666253.5172001902
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 1,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 4156
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 3,
+      "committed": 381,
+      "failed": 19,
+      "inflight": 0,
+      "routes": 400,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.5275,
+      "hhi": 0.4877875,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 85259.33158234708,
+      "commitGross": 340665.5455207457,
+      "clearingToCommitRatio": 0.250272834172351,
+      "clientBalance": 659334.4544792542,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 34,
+      "firstFailedExceedStep": 341,
+      "issues": [
+        {
+          "code": "failed_high",
+          "message": "failed too high: 19 > 15"
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "关键失效阈值均未触发，且未见结构性不变量破坏",
+      "confidence": 0.84,
+      "findings": [
+        "集中度合规：avg top1Share=0.5195(<0.72)，avg hhi=0.4752(<0.60)，无明确垄断证据",
+        "预算路径健康：avg budgetSkipRatio=0、avg maxBudgetSkipStreak=0，未见预算饥饿/停滞",
+        "清算压力可接受：avg clearingToCommitRatio=0.2462(<0.30)",
+        "稳定性总体可接受：20次中failedTrials=1，issueCounts仅有failed_high=1；invalid_state/inflight_not_drained/all_isolated/no_route均为0",
+        "deterministicBlocking=true 仅为信号；在当前指标下不足以单独判定失败"
+      ],
+      "suggestedActions": [
+        "针对 failed_high 试次做回放与根因定位，确认是否为可复现尾部风险",
+        "扩大异常样本覆盖（不只 sampleHead）以验证 activeRouteNodes≈2.95 的长期稳定性",
+        "设置前置预警线（如 top1Share>0.65 或 hhi>0.55）提前调参，避免向失败阈值漂移"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "关键失效阈值均未触发，且未见结构性不变量破坏",
+      "confidence": 0.84,
+      "findings": [
+        "集中度合规：avg top1Share=0.5195(<0.72)，avg hhi=0.4752(<0.60)，无明确垄断证据",
+        "预算路径健康：avg budgetSkipRatio=0、avg maxBudgetSkipStreak=0，未见预算饥饿/停滞",
+        "清算压力可接受：avg clearingToCommitRatio=0.2462(<0.30)",
+        "稳定性总体可接受：20次中failedTrials=1，issueCounts仅有failed_high=1；invalid_state/inflight_not_drained/all_isolated/no_route均为0",
+        "deterministicBlocking=true 仅为信号；在当前指标下不足以单独判定失败"
+      ],
+      "suggestedActions": [
+        "针对 failed_high 试次做回放与根因定位，确认是否为可复现尾部风险",
+        "扩大异常样本覆盖（不只 sampleHead）以验证 activeRouteNodes≈2.95 的长期稳定性",
+        "设置前置预警线（如 top1Share>0.65 或 hhi>0.55）提前调参，避免向失败阈值漂移"
+      ]
+    }
+  }
+}

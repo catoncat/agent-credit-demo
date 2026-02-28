@@ -1,0 +1,102 @@
+{
+  "options": {
+    "steps": 200,
+    "trials": 50,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/review-200-v2.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 50
+  },
+  "averages": {
+    "committed": 194.58,
+    "failed": 5.42,
+    "routes": 200,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.5629000000000002,
+    "hhi": 0.49867999999999996,
+    "activeRouteNodes": 2.88,
+    "clearingOutflow": 63111.891737666905,
+    "commitGross": 1011092.239622989,
+    "clearingToCommitRatio": 0.06242358562039344,
+    "clientBalance": 6695.285591342306
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 5629
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "核心失败阈值均未触发，且无结构性异常证据。",
+      "confidence": 0.94,
+      "findings": [
+        "分配集中度未越线：avg top1Share=0.5629(<0.72)，avg hhi=0.49868(<0.60)。",
+        "预算阻塞风险低：avg budgetSkipRatio=0(<0.03)，avg maxBudgetSkipStreak=0(<3)。",
+        "清算压力可控：avg clearingToCommitRatio=0.06242358562039344(<0.30)。",
+        "系统稳定性正常：failedTrials=0、anomalyTrials=0、issueCounts 各项为 0，deterministicBlocking=false。",
+        "activeRouteNodes=2.88 偏低，但未与垄断证据（高 top1Share/HHI）同时出现，未满足该项 FAIL 条件。"
+      ],
+      "suggestedActions": [
+        "补充并保留按 trial 的路由分布样本（当前 sampleCount=0），提高异常发现质量与可审计性。",
+        "继续监控 activeRouteNodes 与 top1Share/hhi 的联动趋势，若活跃节点继续下降则提前触发多样性干预。"
+      ]
+    }
+  }
+}

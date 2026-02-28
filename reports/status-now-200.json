@@ -1,0 +1,415 @@
+{
+  "options": {
+    "steps": 200,
+    "trials": 20,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/status-now-200.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "budgetRefillThreshold": 9000
+  },
+  "totals": {
+    "failedTrials": 20,
+    "anomalyTrials": 0,
+    "totalTrials": 20
+  },
+  "averages": {
+    "committed": 564.6,
+    "failed": 38.25,
+    "routes": 609.3,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.3966345617188341,
+    "hhi": 0.34805994309733973,
+    "activeRouteNodes": 3.1,
+    "clearingOutflow": 58944.110699864395,
+    "commitGross": 1062603.5034423557,
+    "clearingToCommitRatio": 0.05547868930528545,
+    "clientBalance": 6455.045341005834
+  },
+  "issueCounts": {
+    "no_route": 0,
+    "inflight_not_drained": 20,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 4829
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 1,
+      "committed": 601,
+      "failed": 32,
+      "inflight": 8,
+      "routes": 641,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.36973478939157567,
+      "hhi": 0.3356324580596328,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 49549.800564032674,
+      "commitGross": 1065742.3169978014,
+      "clearingToCommitRatio": 0.04649322802871765,
+      "clientBalance": 6411.494237358876,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 8"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "committed": 574,
+      "failed": 22,
+      "inflight": 7,
+      "routes": 603,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.4013266998341625,
+      "hhi": 0.3409954099045953,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 49012.96665036357,
+      "commitGross": 1072639.1834610698,
+      "clearingToCommitRatio": 0.0456938059005211,
+      "clientBalance": 5902.394802610977,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 7"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "committed": 583,
+      "failed": 32,
+      "inflight": 5,
+      "routes": 620,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.3741935483870968,
+      "hhi": 0.3365868886576483,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 70400.29477969908,
+      "commitGross": 1060632.452263513,
+      "clearingToCommitRatio": 0.06637576912667216,
+      "clientBalance": 6809.7026467030355,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 5"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "committed": 577,
+      "failed": 34,
+      "inflight": 7,
+      "routes": 618,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.3705501618122977,
+      "hhi": 0.3357893193410207,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 63847.99146145755,
+      "commitGross": 1056582.4876289554,
+      "clearingToCommitRatio": 0.06042878072372455,
+      "clientBalance": 6980.663593678689,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 7"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "committed": 585,
+      "failed": 34,
+      "inflight": 5,
+      "routes": 624,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.3974358974358974,
+      "hhi": 0.34098146778435234,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 60138.989143909435,
+      "commitGross": 1062457.4691760556,
+      "clearingToCommitRatio": 0.05660366733601836,
+      "clientBalance": 6026.05917578633,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 5"
+        }
+      ]
+    },
+    {
+      "trial": 6,
+      "committed": 552,
+      "failed": 34,
+      "inflight": 6,
+      "routes": 592,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.36655405405405406,
+      "hhi": 0.3389963020452885,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 64678.556081974166,
+      "commitGross": 1060323.8717779727,
+      "clearingToCommitRatio": 0.060998868179323214,
+      "clientBalance": 6269.874854036349,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 6"
+        }
+      ]
+    },
+    {
+      "trial": 7,
+      "committed": 585,
+      "failed": 30,
+      "inflight": 8,
+      "routes": 623,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.4012841091492777,
+      "hhi": 0.3418373788096226,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 72323.3926554138,
+      "commitGross": 1058495.8146168287,
+      "clearingToCommitRatio": 0.06832657404658192,
+      "clientBalance": 6950.718287185089,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 8"
+        }
+      ]
+    },
+    {
+      "trial": 8,
+      "committed": 591,
+      "failed": 29,
+      "inflight": 5,
+      "routes": 625,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.4224,
+      "hhi": 0.35282176,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 48046.619107301536,
+      "commitGross": 1068184.238903011,
+      "clearingToCommitRatio": 0.04497971169902655,
+      "clientBalance": 7306.564245258919,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 5"
+        }
+      ]
+    },
+    {
+      "trial": 9,
+      "committed": 523,
+      "failed": 63,
+      "inflight": 4,
+      "routes": 590,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.5033898305084745,
+      "hhi": 0.46982476299913806,
+      "activeRouteNodes": 5,
+      "clearingOutflow": 65704.07482391209,
+      "commitGross": 1063977.2605859067,
+      "clearingToCommitRatio": 0.061753269790493864,
+      "clientBalance": 5972.141111334573,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 4"
+        }
+      ]
+    },
+    {
+      "trial": 10,
+      "committed": 554,
+      "failed": 43,
+      "inflight": 8,
+      "routes": 605,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.3537190082644628,
+      "hhi": 0.33444983266170336,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 52008.629480546675,
+      "commitGross": 1053879.1246932487,
+      "clearingToCommitRatio": 0.049349710286447475,
+      "clientBalance": 7041.736738611097,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 8"
+        }
+      ]
+    },
+    {
+      "trial": 11,
+      "committed": 594,
+      "failed": 34,
+      "inflight": 8,
+      "routes": 636,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.3663522012578616,
+      "hhi": 0.3349996044460266,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 47086.82348399263,
+      "commitGross": 1067262.3189239395,
+      "clearingToCommitRatio": 0.04411925976311768,
+      "clientBalance": 7457.062413609231,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 8"
+        }
+      ]
+    },
+    {
+      "trial": 12,
+      "committed": 552,
+      "failed": 42,
+      "inflight": 3,
+      "routes": 597,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.4120603015075377,
+      "hhi": 0.3430356696940874,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 47504.486703815375,
+      "commitGross": 1062278.6860662615,
+      "clearingToCommitRatio": 0.0447194199854747,
+      "clientBalance": 7271.5100185443935,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "issues": [
+        {
+          "code": "inflight_not_drained",
+          "message": "inflight not drained: 3"
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "20/20 轮出现 inflight_not_drained，属于持续性事务不变量破坏。",
+      "confidence": 0.95,
+      "findings": [
+        "阈值型指标均未触发失败线：top1Share=0.3966、hhi=0.3481、budgetSkipRatio=0、maxBudgetSkipStreak=0、clearingToCommitRatio=0.0555。",
+        "但 issueCounts.inflight_not_drained=20 且 failedTrials=20/20；样本中 inflight 持续为 8、7、5、7，未在轮次结束清空。",
+        "deterministicBlocking=true 与持续 inflight 未排空相互印证，显示为稳定阻塞模式而非偶发抖动。",
+        "anomalyTrials=0 与 20/20 的同类结构问题不一致，异常发现质量存在漏报。"
+      ],
+      "suggestedActions": [
+        "在 EXECUTING→COMMIT/ABORT 后加入强制 drain 与幂等补偿，任何残留 inflight 直接标记结构异常。",
+        "新增轮次结束不变量断言：inflight==0、reserved_y 全释放、delta 清零；断言失败即计入 anomalyTrials。",
+        "修复后复跑同配置，目标是 inflight_not_drained 降至 0/20，再复核分散度与清算比率。"
+      ]
+    }
+  }
+}

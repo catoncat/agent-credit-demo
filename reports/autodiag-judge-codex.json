@@ -1,0 +1,380 @@
+{
+  "options": {
+    "steps": 60,
+    "trials": 10,
+    "clearEvery": 5,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": false,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": true,
+    "jsonOut": "reports/autodiag-judge-codex.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 5,
+    "routeNearBestRatio": 0.12,
+    "routeTemperature": 0.08,
+    "adaptiveDeltaFloor": 16,
+    "maxPaymentRatio": 0.25,
+    "budgetRefillThreshold": 2500,
+    "budgetRefillAmount": 1800
+  },
+  "totals": {
+    "failedTrials": 9,
+    "anomalyTrials": 0,
+    "totalTrials": 10
+  },
+  "averages": {
+    "committed": 58.3,
+    "failed": 1.7,
+    "routes": 60,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.7283333333333333,
+    "hhi": 0.6297777777777778,
+    "activeRouteNodes": 2.4,
+    "clearingOutflow": 94760.42195207032,
+    "commitGross": 735266.0998675153,
+    "clearingToCommitRatio": 0.12933065585438994,
+    "clientBalance": 264733.90013248473
+  },
+  "issueCounts": {
+    "committed_low": 9,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 437
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [
+    {
+      "trial": 1,
+      "committed": 58,
+      "failed": 2,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.8166666666666667,
+      "hhi": 0.6950000000000001,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 87063.01153973141,
+      "commitGross": 678974.8661764952,
+      "clearingToCommitRatio": 0.12822714930525858,
+      "clientBalance": 321025.1338235048,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 58 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "committed": 58,
+      "failed": 2,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.85,
+      "hhi": 0.7449999999999999,
+      "activeRouteNodes": 2,
+      "clearingOutflow": 102467.7531580975,
+      "commitGross": 770470.7892770958,
+      "clearingToCommitRatio": 0.13299368981170487,
+      "clientBalance": 229529.2107229044,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 58 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "committed": 57,
+      "failed": 3,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.7833333333333333,
+      "hhi": 0.6383333333333333,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 87165.98966465083,
+      "commitGross": 807682.4665102331,
+      "clearingToCommitRatio": 0.10792111167309394,
+      "clientBalance": 192317.53348976703,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 38,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 57 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "committed": 59,
+      "failed": 1,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.8166666666666667,
+      "hhi": 0.7005555555555556,
+      "activeRouteNodes": 2,
+      "clearingOutflow": 98186.83947635077,
+      "commitGross": 781860.3661778006,
+      "clearingToCommitRatio": 0.12558104199135525,
+      "clientBalance": 218139.6338221991,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 8,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 59 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "committed": 58,
+      "failed": 2,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.5833333333333334,
+      "hhi": 0.513888888888889,
+      "activeRouteNodes": 2,
+      "clearingOutflow": 92533.97179129052,
+      "commitGross": 698572.5422859639,
+      "clearingToCommitRatio": 0.13246150713065288,
+      "clientBalance": 301427.457714036,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 8,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 58 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 7,
+      "committed": 58,
+      "failed": 2,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.7333333333333333,
+      "hhi": 0.6005555555555555,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 90643.0764488849,
+      "commitGross": 766899.1808341205,
+      "clearingToCommitRatio": 0.1181942538395942,
+      "clientBalance": 233100.81916587957,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 43,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 58 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 8,
+      "committed": 59,
+      "failed": 1,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.55,
+      "hhi": 0.5050000000000001,
+      "activeRouteNodes": 2,
+      "clearingOutflow": 94823.47554606378,
+      "commitGross": 731446.0670731935,
+      "clearingToCommitRatio": 0.12963836954580973,
+      "clientBalance": 268553.93292680616,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 59 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 9,
+      "committed": 58,
+      "failed": 2,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.5166666666666667,
+      "hhi": 0.5005555555555556,
+      "activeRouteNodes": 2,
+      "clearingOutflow": 96814.1664963765,
+      "commitGross": 723605.7337472205,
+      "clearingToCommitRatio": 0.1337940842384161,
+      "clientBalance": 276394.2662527796,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": 8,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 58 < 60"
+        }
+      ]
+    },
+    {
+      "trial": 10,
+      "committed": 58,
+      "failed": 2,
+      "inflight": 0,
+      "routes": 60,
+      "budgetSkips": 0,
+      "budgetSkipRatio": 0,
+      "maxBudgetSkipStreak": 0,
+      "isolated": 0,
+      "top1Share": 0.7833333333333333,
+      "hhi": 0.653888888888889,
+      "activeRouteNodes": 3,
+      "clearingOutflow": 95168.75429953307,
+      "commitGross": 654482.7357964057,
+      "clearingToCommitRatio": 0.1454106412504941,
+      "clientBalance": 345517.2642035948,
+      "firstBudgetSkipStep": null,
+      "firstDominantStep": null,
+      "firstFailedExceedStep": null,
+      "issues": [
+        {
+          "code": "committed_low",
+          "message": "committed too low: 58 < 60"
+        }
+      ]
+    }
+  ],
+  "judge": {
+    "status": "ok",
+    "required": false,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "deterministicBlocking 下 9/10 试验因 committed_low 失败，不满足工程验证门槛",
+      "confidence": 0.95,
+      "findings": [
+        "deterministicBlocking=true 且 failedTrials=9/10，按策略应默认不通过",
+        "失败几乎全部来自 committed_low（9 次）；样本 committed 多为 57-59，低于 60 阈值",
+        "anomalyTrials=0、no_route=0、budget_stall=0，表现为系统稳定但稳定地未达标"
+      ],
+      "suggestedActions": [
+        "优先调整可提升 committed 的参数（容量回补、路由选择、并发配额），目标稳定达到 >=60",
+        "核对 committed=60 阈值是否为测试门槛配置偏差；若是，修正阈值后重跑",
+        "增加固定种子回归与阈值敏感性实验，确认从“稳定欠标”转为“稳定达标”"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": false,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "fail",
+      "reason": "deterministicBlocking 下 9/10 试验因 committed_low 失败，不满足工程验证门槛",
+      "confidence": 0.95,
+      "findings": [
+        "deterministicBlocking=true 且 failedTrials=9/10，按策略应默认不通过",
+        "失败几乎全部来自 committed_low（9 次）；样本 committed 多为 57-59，低于 60 阈值",
+        "anomalyTrials=0、no_route=0、budget_stall=0，表现为系统稳定但稳定地未达标"
+      ],
+      "suggestedActions": [
+        "优先调整可提升 committed 的参数（容量回补、路由选择、并发配额），目标稳定达到 >=60",
+        "核对 committed=60 阈值是否为测试门槛配置偏差；若是，修正阈值后重跑",
+        "增加固定种子回归与阈值敏感性实验，确认从“稳定欠标”转为“稳定达标”"
+      ]
+    }
+  }
+}

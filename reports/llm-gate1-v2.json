@@ -1,0 +1,144 @@
+{
+  "options": {
+    "steps": 100,
+    "trials": 50,
+    "clearEvery": 8,
+    "addNodesAt": [
+      20,
+      40,
+      60
+    ],
+    "mode": "ui",
+    "clientBalance": 1000000,
+    "minCommitted": 60,
+    "maxFailed": 15,
+    "anomalyTop1Share": 0.95,
+    "anomalyHhi": 0.93,
+    "anomalyBudgetSkipRatio": 0.55,
+    "anomalyBudgetSkipStreak": 20,
+    "anomalyMinActiveRouteNodes": 2,
+    "maxSampleFailures": 12,
+    "judgeCmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "judgeTimeoutMs": 90000,
+    "judgeRequired": true,
+    "judgeAuthoritative": true,
+    "whitepaperPath": "../whitepaper.md",
+    "whitepaperMaxChars": 12000,
+    "whitepaperRuleOnly": true,
+    "allowFailures": false,
+    "jsonOut": "reports/llm-gate1-v2.json"
+  },
+  "autoTickPolicy": {
+    "clearEvery": 8,
+    "routeNearBestRatio": 0.75,
+    "routeTemperature": 0.35,
+    "adaptiveDeltaFloor": 8,
+    "maxPaymentRatio": 0.08,
+    "maxPaymentAbsolute": 2200,
+    "budgetRefillThreshold": 9000,
+    "budgetRefillAmount": 4500
+  },
+  "totals": {
+    "failedTrials": 0,
+    "anomalyTrials": 0,
+    "totalTrials": 50
+  },
+  "averages": {
+    "committed": 97.76,
+    "failed": 2.24,
+    "routes": 100,
+    "budgetSkips": 0,
+    "budgetSkipRatio": 0,
+    "maxBudgetSkipStreak": 0,
+    "top1Share": 0.6318,
+    "hhi": 0.5326,
+    "activeRouteNodes": 2.88,
+    "clearingOutflow": 6286.551218114681,
+    "commitGross": 95504.86320486937,
+    "clearingToCommitRatio": 0.0659555489305686,
+    "clientBalance": 904495.1367951311
+  },
+  "issueCounts": {
+    "committed_low": 0,
+    "failed_high": 0,
+    "no_route": 0,
+    "inflight_not_drained": 0,
+    "all_isolated": 0,
+    "invalid_state": 0,
+    "node_absorption": 0,
+    "budget_starvation": 0,
+    "budget_stall": 0,
+    "low_route_diversity": 0
+  },
+  "routeShares": {
+    "DOMINANT": 3159
+  },
+  "rootCauses": [
+    "未发现显著结构性异常，当前配置在给定阈值内稳定。"
+  ],
+  "samples": [],
+  "judge": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "未触发任何硬性失败条件，且未见结构性不变量破坏；但集中度仍偏高需持续监控。",
+      "confidence": 0.86,
+      "findings": [
+        "top1Share=0.6318、hhi=0.5326，均低于失败阈值(0.72/0.60)，未形成明确垄断证据。",
+        "budgetSkipRatio=0、maxBudgetSkipStreak=0，未见预算饥饿或阻塞。",
+        "clearingToCommitRatio=0.0659555489305686，显著低于0.30，清算开销可控。",
+        "failedTrials=0、anomalyTrials=0，issueCounts各项为0，未见结构性异常。",
+        "activeRouteNodes=2.88偏低边缘，结合当前集中度提示有轻度集中风险。",
+        "sampleCount=0，异常发现质量缺少样本级佐证。"
+      ],
+      "suggestedActions": [
+        "补充并保留样本级路由/异常记录（非空sampleHead），提升异常发现可解释性。",
+        "对集中度设预警线并持续回归（top1Share、hhi、activeRouteNodes联动监控）。",
+        "按白皮书意图增加对抗性场景（女巫/刷单、低质量节点冲击）做压力复验。"
+      ]
+    }
+  },
+  "llm": {
+    "status": "ok",
+    "required": true,
+    "timeoutMs": 90000,
+    "cmd": "bun run src/scripts/codex-judge.ts --model gpt-5.3-codex --timeout-ms 180000",
+    "whitepaper": {
+      "path": "/Users/envvar/work/repos/bk/whitepaper.md",
+      "included": true,
+      "mode": "rule_only",
+      "sourceChars": 14464,
+      "excerptChars": 3528,
+      "truncated": false
+    },
+    "verdict": {
+      "verdict": "pass",
+      "reason": "未触发任何硬性失败条件，且未见结构性不变量破坏；但集中度仍偏高需持续监控。",
+      "confidence": 0.86,
+      "findings": [
+        "top1Share=0.6318、hhi=0.5326，均低于失败阈值(0.72/0.60)，未形成明确垄断证据。",
+        "budgetSkipRatio=0、maxBudgetSkipStreak=0，未见预算饥饿或阻塞。",
+        "clearingToCommitRatio=0.0659555489305686，显著低于0.30，清算开销可控。",
+        "failedTrials=0、anomalyTrials=0，issueCounts各项为0，未见结构性异常。",
+        "activeRouteNodes=2.88偏低边缘，结合当前集中度提示有轻度集中风险。",
+        "sampleCount=0，异常发现质量缺少样本级佐证。"
+      ],
+      "suggestedActions": [
+        "补充并保留样本级路由/异常记录（非空sampleHead），提升异常发现可解释性。",
+        "对集中度设预警线并持续回归（top1Share、hhi、activeRouteNodes联动监控）。",
+        "按白皮书意图增加对抗性场景（女巫/刷单、低质量节点冲击）做压力复验。"
+      ]
+    }
+  }
+}
