@@ -22,11 +22,27 @@ export function createBootstrappedAgentState(
   const medianS = median(peerList.map((agent) => agent.s_hat));
   const medianQuota = median(peerList.map((agent) => agent.quota));
   const medianCapacity = median(peerList.map((agent) => agent.capacity));
+  const avgOutcomes = peerList.reduce(
+    (sum, agent) => sum + agent.totalCompleted + agent.totalFailed,
+    0,
+  ) / Math.max(1, peerList.length);
 
-  const quota = Math.max(400, Math.min(900, Math.round(medianQuota * 0.7)));
-  const capacity = Math.max(2, Math.min(4, Math.round(medianCapacity * 0.6)));
-  const f = Math.max(1.2, Math.min(6, medianF * 0.8 + 1.0));
-  const sHat = Math.max(0.45, Math.min(0.9, medianS * 0.9));
+  // Fair cold-start:
+  // If the network itself is still cold (you add nodes before real traffic),
+  // avoid giving new nodes an artificial disadvantage.
+  const networkCold = avgOutcomes < 2;
+  const quota = networkCold
+    ? Math.max(850, Math.min(1000, Math.round(medianQuota * 0.95)))
+    : Math.max(500, Math.min(950, Math.round(medianQuota * 0.85)));
+  const capacity = networkCold
+    ? Math.max(4, Math.min(5, Math.round(medianCapacity * 0.95)))
+    : Math.max(3, Math.min(5, Math.round(medianCapacity * 0.85)));
+  const f = networkCold
+    ? Math.max(0, Math.min(0.4, medianF * 1.02 + 0.02))
+    : Math.max(0.1, Math.min(3.5, medianF * 0.9 + 0.2));
+  const sHat = networkCold
+    ? Math.max(0.9, Math.min(1.0, medianS * 0.98))
+    : Math.max(0.7, Math.min(1.0, medianS * 0.95));
 
   return {
     ...base,

@@ -263,7 +263,7 @@ export function executeAction(
           priceAfter: p,
           fBefore: agent.f,
           fAfter: agent.f,
-          description: `ROUTE ${action.taskId} -> ${selected}, P_eff=${effectivePrice.toFixed(2)}`,
+          description: `ROUTE ${action.taskId} -> ${selected}, P_eff=${effectivePrice.toFixed(2)} | ${result.reason}`,
         });
       }
       break;

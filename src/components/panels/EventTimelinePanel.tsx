@@ -90,7 +90,7 @@ export function EventTimelinePanel({ forceFullHeight = false }: EventTimelinePan
 
   const copyPayload = useMemo(() => {
     const lines = [
-      '# 事件时间线快照',
+      '# Event Timeline Snapshot',
       `tick: ${tick}`,
       `phase: ${phase}`,
       `rng: ${rngState}`,
@@ -136,11 +136,11 @@ export function EventTimelinePanel({ forceFullHeight = false }: EventTimelinePan
   return (
     <section className={`${panelHeightClass} bg-[var(--sys-bg-panel)] border border-[var(--sys-border-default)] rounded-xl overflow-visible lg:overflow-hidden flex flex-col`}>
       <div className="px-3 py-2 border-b border-[var(--sys-border-default)] flex items-center justify-between gap-2">
-        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">全量事件日志</div>
+        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">Full Event Log</div>
         <button
           onClick={handleCopyTimeline}
-          title="复制当前时间线"
-          aria-label="复制当前时间线"
+          title="Copy current timeline"
+          aria-label="Copy current timeline"
           className="h-8 px-2.5 rounded-md border border-[var(--sys-border-default)] text-[11px] text-[color:var(--sys-text-secondary)] hover:text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] transition-colors inline-flex items-center gap-1.5"
         >
           <svg
@@ -156,7 +156,7 @@ export function EventTimelinePanel({ forceFullHeight = false }: EventTimelinePan
             <rect x="5.25" y="5.25" width="7.5" height="7.5" rx="1.4" />
             <path d="M10.75 5V3.75c0-.83-.67-1.5-1.5-1.5h-5.5c-.83 0-1.5.67-1.5 1.5v5.5c0 .83.67 1.5 1.5 1.5H5" />
           </svg>
-          {copyStatus === 'copied' ? '已复制' : copyStatus === 'error' ? '失败' : '复制'}
+          {copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Failed' : 'Copy'}
         </button>
       </div>
 
@@ -166,7 +166,7 @@ export function EventTimelinePanel({ forceFullHeight = false }: EventTimelinePan
 
       <div className="overflow-visible lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
         {groupedEvents.length === 0 ? (
-          <div className="px-3 py-4 text-[11px] text-[color:var(--sys-text-muted)]">暂无事件</div>
+          <div className="px-3 py-4 text-[11px] text-[color:var(--sys-text-muted)]">No events yet</div>
         ) : (
           groupedEvents.map((group) => {
             const expanded = isTickExpanded(group.tick);
@@ -180,10 +180,10 @@ export function EventTimelinePanel({ forceFullHeight = false }: EventTimelinePan
                   <div className="flex items-center gap-2 font-mono text-[11px]">
                     <span className="text-[color:var(--sys-text-secondary)] w-4">{expanded ? '▾' : '▸'}</span>
                     <span className="text-[color:var(--sys-text-primary)]">T{group.tick}</span>
-                    <span className="text-[color:var(--sys-text-muted)]">事件 {group.rows.length}</span>
-                    <span className="text-[color:var(--sys-text-muted)]">净Δy {formatSigned(group.netDeltaY, 1)}</span>
+                    <span className="text-[color:var(--sys-text-muted)]">events {group.rows.length}</span>
+                    <span className="text-[color:var(--sys-text-muted)]">net Δy {formatSigned(group.netDeltaY, 1)}</span>
                     {group.hasDeltaR && (
-                      <span className="text-[color:var(--sys-text-muted)]">净ΔR {formatSigned(group.netDeltaR, 1)}</span>
+                      <span className="text-[color:var(--sys-text-muted)]">net ΔR {formatSigned(group.netDeltaR, 1)}</span>
                     )}
                   </div>
                 </button>

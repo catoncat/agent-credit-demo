@@ -13,6 +13,9 @@ interface Row {
   sHat: number;
   pEff: number;
   freeQuota: number;
+  outcomes: number;
+  warmupMultiplier: number;
+  loadMultiplier: number;
 }
 
 function fmt(v: number, digits = 2): string {
@@ -57,6 +60,9 @@ export function DecisionInspector() {
         f: agent.f,
         sHat: agent.s_hat,
         pEff: available ? getEffectivePrice(agent, probeDelta) : Infinity,
+        outcomes: agent.totalCompleted + agent.totalFailed,
+        warmupMultiplier: 1 + (1 - Math.min(1, (agent.totalCompleted + agent.totalFailed) / 12)) * 1.4,
+        loadMultiplier: 1 + (Math.max(0, agent.capacity > 0 ? agent.activeTasks / agent.capacity : 1) * 0.35),
       };
     });
   }, [agents, probeDelta]);
@@ -93,7 +99,7 @@ export function DecisionInspector() {
     return lastRoute.agentId;
   }, [lastRoute, tick]);
   const footerText = useMemo(() => {
-    if (!lastRoute) return '尚无 ROUTE 事件';
+    if (!lastRoute) return 'No ROUTE event yet';
     if (routeWinnerId && bestPriceId && routeWinnerId !== bestPriceId) {
       return `${lastRoute.description} | routed=${routeWinnerId}, best=${bestPriceId}`;
     }
@@ -103,7 +109,7 @@ export function DecisionInspector() {
   return (
     <section className="lg:h-full bg-[var(--sys-bg-panel)] border border-[var(--sys-border-default)] rounded-xl overflow-visible lg:overflow-hidden flex flex-col">
       <div className="px-3 py-2 border-b border-[var(--sys-border-default)] flex items-center justify-between gap-2">
-        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">路由决策面板</div>
+        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">Routing Decision Panel</div>
         <span className="text-[11px] font-mono text-[color:var(--sys-text-secondary)]">Δy={probeDelta}</span>
       </div>
 
@@ -119,7 +125,7 @@ export function DecisionInspector() {
           </colgroup>
           <thead className="lg:sticky lg:top-0 z-10 bg-[var(--sys-bg-soft)] text-[color:var(--sys-text-muted)]">
             <tr>
-              <th className="text-left px-3 py-1.5">节点</th>
+              <th className="text-left px-3 py-1.5">Node</th>
               <th className="text-right px-2 py-1.5">free</th>
               <th className="text-right px-2 py-1.5">Δx</th>
               <th className="text-right px-2 py-1.5">f</th>
@@ -142,12 +148,17 @@ export function DecisionInspector() {
                   className={rowClass}
                 >
                   <td className="px-3 py-1.5 text-[color:var(--sys-text-primary)]">
-                    <span className="inline-flex items-center gap-1">
-                      <span>{row.id}</span>
-                      {!row.available ? <span className="text-[10px] text-[color:var(--sys-text-muted)]">({row.unavailableReason})</span> : null}
-                      <span className="inline-flex items-center gap-1 min-w-[66px]">
-                        {isRouted ? <span className="text-[10px] text-[color:var(--sys-status-success)]">ROUTED</span> : null}
-                        {isBest ? <span className="text-[10px] text-[color:var(--sys-status-idle)]">BEST</span> : null}
+                    <span className="inline-flex flex-col">
+                      <span className="inline-flex items-center gap-1">
+                        <span>{row.id}</span>
+                        {!row.available ? <span className="text-[10px] text-[color:var(--sys-text-muted)]">({row.unavailableReason})</span> : null}
+                        <span className="inline-flex items-center gap-1 min-w-[66px]">
+                          {isRouted ? <span className="text-[10px] text-[color:var(--sys-status-success)]">ROUTED</span> : null}
+                          {isBest ? <span className="text-[10px] text-[color:var(--sys-status-idle)]">BEST</span> : null}
+                        </span>
+                      </span>
+                      <span className="text-[9px] text-[color:var(--sys-text-muted)]">
+                        out={row.outcomes} · cold×{row.warmupMultiplier.toFixed(2)} · load×{row.loadMultiplier.toFixed(2)}
                       </span>
                     </span>
                   </td>

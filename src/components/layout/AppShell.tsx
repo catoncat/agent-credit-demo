@@ -48,13 +48,13 @@ export function AppShell({ currentView, onOpenDocs, onOpenSimulation }: AppShell
           <DocsShell />
         </div>
       ) : (
-        <div className="p-2 sm:p-3 overflow-visible lg:flex-1 lg:overflow-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 min-h-0">
-            <div className="lg:col-span-7 min-h-[320px] md:min-h-[380px] lg:h-[clamp(420px,70dvh,760px)]">
+        <div className="p-2 sm:p-3 flex-1 min-h-0 overflow-visible lg:overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 min-h-0 lg:h-full">
+            <div className="lg:col-span-7 min-h-[320px] md:min-h-[380px] lg:min-h-0 lg:h-full">
               <FlowTopologyPanel />
             </div>
-            <div className="lg:col-span-5 min-h-0 flex flex-col gap-3 lg:h-[clamp(420px,70dvh,760px)]">
-              <div className="shrink-0 min-h-[260px] lg:h-[clamp(220px,32dvh,320px)]">
+            <div className="lg:col-span-5 min-h-0 flex flex-col gap-3 lg:h-full">
+              <div className="shrink-0 min-h-[260px] lg:min-h-0 lg:basis-[36%]">
                 <DecisionInspector />
               </div>
               <div className="min-h-[320px] lg:min-h-0 lg:flex-1">
@@ -68,7 +68,7 @@ export function AppShell({ currentView, onOpenDocs, onOpenSimulation }: AppShell
       {!isDocsView && isEventSidebarOpen && (
         <button
           type="button"
-          aria-label="关闭事件侧栏遮罩"
+          aria-label="Close events sidebar overlay"
           onClick={() => setIsEventSidebarOpen(false)}
           className="absolute inset-0 z-40 bg-black/25"
         />

@@ -24,11 +24,9 @@ function buildInitialSimulationState(): SimulationState {
     priceComparison: null,
     clientBalance: DEFAULT_CLIENT_BALANCE,
     tick: 0,
-    // Start directly from continuous experiment mode.
-    // The 6-step script remains available as an optional replay aid.
     phase: TOTAL_GUIDE_PHASES,
     rngState: normalizeSeed(DEFAULT_SIM_SEED),
-    lastNarrative: '已进入连续实验模式，点击“推进实验 Tick”开始。',
+    lastNarrative: '',
   };
 }
 

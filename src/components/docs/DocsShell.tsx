@@ -148,11 +148,11 @@ export function DocsShell() {
         <header className="sticky top-0 z-20 border-b border-[#d7dce3] bg-[#f8f8f7]/95 backdrop-blur">
           <div className="px-3 py-2.5 sm:px-5 lg:px-8">
             <div className="flex flex-wrap items-end justify-between gap-2.5">
-              <h1 className="text-[19px] font-semibold tracking-tight sm:text-[21px]">文档中心</h1>
+              <h1 className="text-[19px] font-semibold tracking-tight sm:text-[21px]">Documentation</h1>
               <div className="text-right">
                 <p className="text-[12px] leading-5 text-[#374151]">{activeDoc.title}</p>
                 <p className="text-[11px] leading-4 text-[#6b7280]">
-                  {activeDoc.readingMinutes} 分钟 · 更新 {activeDoc.updatedAt}
+                  {activeDoc.readingMinutes} min · Updated {activeDoc.updatedAt}
                 </p>
               </div>
             </div>
@@ -238,7 +238,7 @@ export function DocsShell() {
 
           <aside className="hidden lg:block min-h-0 overflow-y-auto border-l border-[#d7dce3] bg-[#f8f8f7]">
             <div className="p-4">
-              <p className="text-[11px] uppercase tracking-[0.12em] text-[#6b7280]">目录</p>
+              <p className="text-[11px] uppercase tracking-[0.12em] text-[#6b7280]">Contents</p>
               <nav className="mt-2.5 space-y-1">
                 {tocItems.map((item) => {
                   const isActive = activeHeadingIndex === item.index;

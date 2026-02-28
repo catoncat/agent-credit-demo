@@ -45,8 +45,6 @@ export function ControlBar({
 
   const iconBtnClass =
     'h-9 min-w-9 px-2 rounded-md border border-[var(--sys-border-default)] text-[color:var(--sys-text-secondary)] hover:text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors inline-flex items-center justify-center shrink-0';
-  const viewBtnClass =
-    'h-9 px-3 rounded-md border border-[var(--sys-border-default)] text-sm font-medium text-[color:var(--sys-text-secondary)] hover:text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] transition-colors inline-flex items-center justify-center shrink-0';
   const returnBtnClass =
     'h-9 px-3 rounded-md border border-[var(--sys-border-default)] bg-white text-sm font-medium text-[color:var(--sys-text-primary)] hover:bg-[var(--sys-bg-hover)] transition-colors inline-flex items-center justify-center gap-1.5 shrink-0';
   const githubBtnClass =
@@ -60,7 +58,7 @@ export function ControlBar({
     >
       <div className="flex items-center gap-2 min-w-0 shrink-0">
         <div className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-[var(--sys-status-executing)]' : 'bg-[var(--sys-status-idle)]'}`} />
-        <h1 className="text-base font-semibold text-[color:var(--sys-text-primary)] whitespace-nowrap">自治信用网络</h1>
+        <h1 className="text-base font-semibold text-[color:var(--sys-text-primary)] whitespace-nowrap">Autonomous Credit Network</h1>
       </div>
 
       <div
@@ -74,8 +72,8 @@ export function ControlBar({
               <button
                 onClick={prevStep}
                 disabled={!canPrev}
-                title="回退 1 tick"
-                aria-label="回退 1 tick"
+                title="Previous tick"
+                aria-label="Previous tick"
                 className={iconBtnClass}
               >
                 <svg
@@ -95,8 +93,8 @@ export function ControlBar({
 
               <button
                 onClick={nextStep}
-                title="推进 1 tick"
-                aria-label="推进 1 tick"
+                title="Next tick"
+                aria-label="Next tick"
                 className="h-9 min-w-9 px-2 rounded-md bg-[var(--sys-action-primary)] text-[color:var(--sys-text-inverse)] hover:bg-[var(--sys-action-primary-hover)] transition-colors inline-flex items-center justify-center shrink-0"
               >
                 <svg
@@ -116,8 +114,8 @@ export function ControlBar({
 
               <button
                 onClick={togglePlay}
-                title={isPlaying ? '暂停自动' : '开始自动'}
-                aria-label={isPlaying ? '暂停自动' : '开始自动'}
+                title={isPlaying ? 'Pause auto-run' : 'Start auto-run'}
+                aria-label={isPlaying ? 'Pause auto-run' : 'Start auto-run'}
                 className={`h-9 min-w-9 px-2 rounded-md border transition-colors inline-flex items-center justify-center shrink-0 ${
                   isPlaying
                     ? 'border-[var(--sys-status-executing)] text-[color:var(--sys-status-executing)] bg-[var(--sys-status-executing-soft)]'
@@ -154,25 +152,39 @@ export function ControlBar({
                 )}
               </button>
 
-              <select
-                value={playSpeed}
-                onChange={(e) => setPlaySpeed(Number(e.target.value))}
-                title="自动速度"
-                aria-label="自动速度"
-                className="h-9 px-2 text-sm bg-[var(--sys-bg-panel)] text-[color:var(--sys-text-secondary)] border border-[var(--sys-border-default)] rounded-md outline-none shrink-0"
-              >
-                <option value={0.5}>0.5x</option>
-                <option value={1}>1x</option>
-                <option value={2}>2x</option>
-                <option value={3}>3x</option>
-              </select>
+              <div className="relative shrink-0">
+                <select
+                  value={playSpeed}
+                  onChange={(e) => setPlaySpeed(Number(e.target.value))}
+                  title="Auto speed"
+                  aria-label="Auto speed"
+                  className="h-9 w-[82px] appearance-none rounded-md border border-[var(--sys-border-default)] bg-[var(--sys-bg-panel)] pl-2.5 pr-8 text-sm font-medium text-[color:var(--sys-text-secondary)] outline-none transition-colors hover:bg-[var(--sys-bg-hover)]"
+                >
+                  <option value={0.5}>0.5x</option>
+                  <option value={1}>1x</option>
+                  <option value={2}>2x</option>
+                  <option value={3}>3x</option>
+                </select>
+                <svg
+                  viewBox="0 0 16 16"
+                  className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[color:var(--sys-text-muted)]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m4.5 6.5 3.5 3 3.5-3" />
+                </svg>
+              </div>
             </div>
 
             <div className="flex items-center gap-1 p-1 rounded-lg border border-[var(--sys-border-default)] bg-[var(--sys-bg-soft)] shrink-0">
               <button
                 onClick={() => addAgent()}
-                title="新增节点"
-                aria-label="新增节点"
+                title="Add node"
+                aria-label="Add node"
                 className={iconBtnClass}
               >
                 <svg
@@ -198,8 +210,8 @@ export function ControlBar({
 
               <button
                 onClick={reset}
-                title="重置实验"
-                aria-label="重置实验"
+                title="Reset simulation"
+                aria-label="Reset simulation"
                 className={`${iconBtnClass} text-lg leading-none`}
               >
                 ↺
@@ -207,8 +219,8 @@ export function ControlBar({
 
               <button
                 onClick={onToggleEventSidebar}
-                title={isEventSidebarOpen ? '收起事件侧栏' : '展开事件侧栏'}
-                aria-label={isEventSidebarOpen ? '收起事件侧栏' : '展开事件侧栏'}
+                title={isEventSidebarOpen ? 'Collapse events sidebar' : 'Expand events sidebar'}
+                aria-label={isEventSidebarOpen ? 'Collapse events sidebar' : 'Expand events sidebar'}
                 className={`${iconBtnClass} ${isEventSidebarOpen ? 'bg-[var(--sys-bg-hover)] text-[color:var(--sys-text-primary)]' : ''}`}
               >
                 <svg
@@ -234,9 +246,9 @@ export function ControlBar({
 
         <button
           onClick={isDocsView ? onOpenSimulation : onOpenDocs}
-          title={isDocsView ? '返回仿真' : '打开文档'}
-          aria-label={isDocsView ? '返回仿真' : '打开文档'}
-          className={isDocsView ? returnBtnClass : viewBtnClass}
+          title={isDocsView ? 'Back to simulation' : 'Open docs'}
+          aria-label={isDocsView ? 'Back to simulation' : 'Open docs'}
+          className={isDocsView ? returnBtnClass : iconBtnClass}
         >
           {isDocsView ? (
             <>
@@ -252,10 +264,22 @@ export function ControlBar({
               >
                 <path d="M10.5 3.5 5.5 8l5 4.5" />
               </svg>
-              <span>返回仿真</span>
+              <span>Back</span>
             </>
           ) : (
-            '文档'
+            <svg
+              viewBox="0 0 16 16"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3.5 3.2h6.6a2 2 0 0 1 2 2v7.3H5.5a2 2 0 0 0-2 2Z" />
+              <path d="M12.1 12.5H5.5a2 2 0 0 0-2 2V5.2a2 2 0 0 1 2-2h6.6Z" />
+            </svg>
           )}
         </button>
 
@@ -263,8 +287,8 @@ export function ControlBar({
           href={REPO_URL}
           target="_blank"
           rel="noopener noreferrer"
-          title="GitHub 仓库"
-          aria-label="GitHub 仓库"
+          title="GitHub repository"
+          aria-label="GitHub repository"
           className={githubBtnClass}
         >
           <svg

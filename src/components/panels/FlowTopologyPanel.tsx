@@ -26,7 +26,7 @@ export function FlowTopologyPanel() {
   return (
     <section className="h-full bg-[var(--sys-bg-panel)] border border-[var(--sys-border-default)] rounded-xl overflow-hidden flex flex-col">
       <div className="px-3 py-2 border-b border-[var(--sys-border-default)] flex items-center justify-between">
-        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">路由拓扑</div>
+        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">Routing Topology</div>
         <span className="text-[11px] font-mono text-[color:var(--sys-text-secondary)]">Gateway ↔ Agents</span>
       </div>
 

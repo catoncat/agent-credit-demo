@@ -123,20 +123,20 @@ export function routeTask(
       return {
         selectedAgent,
         prices,
-        reason: `近优采样，选中 ${selectedAgent}`,
+        reason: `近优采样(${selectedPool.length}/${finite.length})，选中 ${selectedAgent}`,
       };
     }
     return {
       selectedAgent,
       prices,
-      reason: `并列最低报价，随机选中 ${selectedAgent}`,
+      reason: `并列最低报价(${selectedPool.length})，随机选中 ${selectedAgent}`,
     };
   }
 
   return {
     selectedAgent,
     prices,
-    reason: `最低有效价格: ${selectedAgent} -> ${bestPrice.toFixed(2)}`,
+    reason: `最低有效价格(${finite.length}候选): ${selectedAgent} -> ${bestPrice.toFixed(2)}`,
   };
 }
 

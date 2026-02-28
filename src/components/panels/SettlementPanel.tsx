@@ -120,7 +120,7 @@ export function SettlementPanel() {
   return (
     <section className="h-full bg-[var(--sys-bg-panel)] border border-[var(--sys-border-default)] rounded-xl overflow-hidden flex flex-col">
       <div className="px-3 py-2 border-b border-[var(--sys-border-default)] flex items-center justify-between">
-        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">结算账本</div>
+        <div className="text-[13px] font-semibold uppercase tracking-wider text-[color:var(--sys-text-muted)]">Settlement Ledger</div>
         <div className="text-[11px] font-mono">
           <span className="text-[color:var(--sys-text-muted)]">client R </span>
           <AnimatedValue value={clientBalance} prev={prevClientBalance} digits={2} valueWidthCh={11} showDelta={false} />
